@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/container"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.main.splash.SpashScreenFragment">
+
+    <ImageView
+        android:id="@+id/idIVLogo"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_100"
+        android:layout_centerInParent="true"
+        android:layout_margin="25dp"
+        android:layout_marginBottom="@dimen/dp_40"
+        android:src="@drawable/ic_coin"
+        app:tint="@color/purple_200" />
+
+    <!--on below line we are creating progress bar-->
+    <ProgressBar
+        android:id="@+id/idPBLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_below="@id/idIVLogo"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/black_30" />
+
+</LinearLayout>

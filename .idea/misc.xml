@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_accomodation.xml" value="0.1815" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_arrow_left.xml" value="0.255" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_calendar.xml" value="0.1815" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_camera.xml" value="0.2625" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_cancel.xml" value="0.256" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_category.xml" value="0.1815" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_coin.xml" value="0.1815" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_credit.xml" value="0.118" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_date.xml" value="0.1815" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_delete.xml" value="0.255" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_edit.xml" value="0.255" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_filter.xml" value="0.256" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_gifts.xml" value="0.255" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_home.xml" value="0.255" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_meals.xml" value="0.118" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_no_image_foreground.xml" value="0.265" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_reset.xml" value="0.255" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_right.xml" value="0.2325" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_sort.xml" value="0.178" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/ic_travel.xml" value="0.2325" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/drawable/rounded_corners_bg.xml" value="0.2325" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/font/founders_regular.xml" value="0.3123076923076923" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/dropdown_item.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/expense_list_item.xml" value="0.29739583333333336" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_expense_detail.xml" value="0.5" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_expense_details.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_expense_form.xml" value="0.29739583333333336" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_expense_main.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_maps.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_trip_detail.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_trip_form.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/fragment_trip_main.xml" value="0.22" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/image_preview.xml" value="0.32592592592592595" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/mexpense_action_bar.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/preview_view.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/spinner_item.xml" value="0.33967391304347827" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/layout/trip_list_item.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/menu/expense_main_menu.xml" value="0.32592592592592595" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/menu/menu_return.xml" value="0.29739583333333336" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/menu/menu_trip_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.265" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpense/app/src/main/res/xml/file_paths.xml" value="0.23020833333333332" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/drawable/ic_arrow_left.xml" value="0.1855" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/drawable/ic_gifts.xml" value="0.124" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/drawable/ic_telephone.xml" value="0.124" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/layout/activity_main.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/layout/fragment_expense_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/layout/fragment_expense_form.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/layout/fragment_expense_main.xml" value="0.264" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/layout/fragment_trip_main.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/layout/mexpense_action_bar.xml" value="0.264" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/MExpenseNative/app/src/main/res/layout/trip_list_item.xml" value="0.264" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="SuppressKotlinCodeStyleNotification">
+    <option name="disableForAll" value="true" />
+  </component>
+</project>

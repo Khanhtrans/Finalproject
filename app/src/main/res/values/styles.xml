@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="styleFontWeight100" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/pretendardthin</item>
+        <item name="android:fontFamily">@font/pretendardthin</item>
+    </style>
+
+    <style name="styleFontWeight300" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/pretendardlight</item>
+        <item name="android:fontFamily">@font/pretendardlight</item>
+    </style>
+
+    <style name="styleFontWeight400" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/pretendardregular</item>
+        <item name="android:fontFamily">@font/pretendardregular</item>
+    </style>
+
+    <style name="styleFontWeight500" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/pretendardmedium</item>
+        <item name="android:fontFamily">@font/pretendardmedium</item>
+    </style>
+
+    <style name="styleFontWeight600" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/pretendardsemibold</item>
+        <item name="android:fontFamily">@font/pretendardsemibold</item>
+    </style>
+
+    <style name="styleFontWeight700" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/pretendardbold</item>
+        <item name="android:fontFamily">@font/pretendardbold</item>
+    </style>
+
+    <style name="styleFontWeight400TL" parent="TextAppearance.Design.Tab">
+        <item name="fontFamily">@font/pretendardregular</item>
+        <item name="android:fontFamily">@font/pretendardregular</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="styleFontWeight700TL" parent="TextAppearance.Design.Tab">
+        <item name="fontFamily">@font/pretendardbold</item>
+        <item name="android:fontFamily">@font/pretendardbold</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+</resources>
