@@ -45,4 +45,13 @@ public class Constants {
     public static final String COLUMN_USER_PASSWORD = "user_password";
     public static final String COLUMN_CATEGORY_ID = "category_id";
     public static final String COLUMN_CATEGORY_NAME = "category_name";
+
+// share preference
+
+    public static final String SHARE_NAME = "my_share";
+    public static final String KEY_NAME = "key_name";
+    public static final String KEY_EMAIL = "key_email";
+    public static final String KEY_IS_LOGIN = "key_is_login";
+
+
 }

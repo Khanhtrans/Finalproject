@@ -1,14 +1,18 @@
 package com.example.mexpense.fragments.main.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.navigation.findNavController
 import com.example.mexpense.MainActivity
 import com.example.mexpense.R
 import com.example.mexpense.base.BaseMVVMFragment
+import com.example.mexpense.base.SharePreUtil
 import com.example.mexpense.databinding.FragmentLoginBinding
 import com.example.mexpense.services.SqlService
+import com.example.mexpense.ultilities.Constants
+import com.example.mexpense.ultilities.Constants.SHARE_NAME
 import com.google.android.material.snackbar.Snackbar
-import java.lang.Exception
 
 
 class LoginFragment : BaseMVVMFragment<FragmentLoginBinding, LoginViewModel>() {
@@ -16,6 +20,7 @@ class LoginFragment : BaseMVVMFragment<FragmentLoginBinding, LoginViewModel>() {
     private lateinit var inputValidation: InputValidation
     private lateinit var databaseHelper: SqlService
     private lateinit var viewBinding: FragmentLoginBinding
+
     override fun getViewModelClass(): Class<LoginViewModel> {
         return LoginViewModel::class.java
     }
@@ -31,12 +36,19 @@ class LoginFragment : BaseMVVMFragment<FragmentLoginBinding, LoginViewModel>() {
 
     override fun registerViewEvent() {
         viewBinding = getViewBinding()
+
+        val isLogin = SharePreUtil.GetShareBoolean(requireContext(), Constants.KEY_IS_LOGIN);
+        if (isLogin) {
+            val email = SharePreUtil.GetShareString(requireContext(), Constants.KEY_EMAIL);
+            viewBinding.username.setText(email?:"")
+        }
+
         viewBinding.loginButton.setOnClickListener {
             verifyFromSQLite({
                 //login success
-                val intent = Intent(activity,MainActivity::class.java)
-                this.startActivity(intent)
-                this.activity?.finish()
+                val email = viewBinding.username.text.toString().trim()
+
+                loginSuccess(email)
             },{
                 Snackbar.make(
                     viewBinding.container,
@@ -52,6 +64,17 @@ class LoginFragment : BaseMVVMFragment<FragmentLoginBinding, LoginViewModel>() {
     }
 
     override fun registerViewModelObs() {
+    }
+
+    private fun loginSuccess(email:String) {
+        val name = databaseHelper.allUser.first { it.email == email }.name
+        SharePreUtil.SetShareString(requireContext(),Constants.KEY_EMAIL,email)
+        SharePreUtil.SetShareString(requireContext(),Constants.KEY_NAME,name)
+        SharePreUtil.SetShareBoolean(requireContext(),Constants.KEY_IS_LOGIN,true)
+
+        val intent = Intent(activity,MainActivity::class.java)
+        this.startActivity(intent)
+        this.activity?.finish()
     }
 
 

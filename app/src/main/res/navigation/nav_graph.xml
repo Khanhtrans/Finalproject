@@ -35,13 +35,4 @@
         android:name="com.example.mexpense.fragments.main.expense.ExpenseDetailsFragment"
         android:label="fragment_expense_details"
         tools:layout="@layout/fragment_expense_details" />
-    <fragment
-        android:id="@+id/splashScreenFragment"
-        android:name="com.example.mexpense.fragments.main.splash.SplashScreenFragment"
-        android:label="SplashScreenFragment"
-        tools:layout="@layout/fragment_spash_screen">
-        <action
-            android:id="@+id/action_splashScreenFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
 </navigation>

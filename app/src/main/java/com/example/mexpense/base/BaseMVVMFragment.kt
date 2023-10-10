@@ -103,8 +103,9 @@ abstract class BaseMVVMFragment<V : ViewBinding, VM : BaseViewModel> : BaseFragm
         registerViewModelObs()
         registerBaseViewModelObs()
         if (!viewModel.isPopBackStack) {
-            registerViewEvent()
             initialize()
+
+            registerViewEvent()
         }
         viewModel.isPopBackStack = true
     }
