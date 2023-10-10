@@ -1,6 +1,8 @@
 package com.example.mexpense.fragments.main.login
 
+import android.content.Intent
 import androidx.navigation.findNavController
+import com.example.mexpense.MainActivity
 import com.example.mexpense.R
 import com.example.mexpense.base.BaseMVVMFragment
 import com.example.mexpense.databinding.FragmentLoginBinding
@@ -32,7 +34,9 @@ class LoginFragment : BaseMVVMFragment<FragmentLoginBinding, LoginViewModel>() {
         viewBinding.loginButton.setOnClickListener {
             verifyFromSQLite({
                 //login success
-                it.findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToExpenseMainFragment())
+                val intent = Intent(activity,MainActivity::class.java)
+                this.startActivity(intent)
+                this.activity?.finish()
             },{
                 Snackbar.make(
                     viewBinding.container,
