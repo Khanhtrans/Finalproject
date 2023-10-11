@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/balance"
-        android:icon="@drawable/ic_meals"
+        android:icon="@drawable/ic_transaction"
         android:title="Balance" />
 
 <!--    <item-->
@@ -17,12 +17,12 @@
 
     <item
         android:id="@+id/budgets"
-        android:icon="@drawable/ic_notes"
+        android:icon="@drawable/ic_budgets"
         android:title="Budgets" />
 
     <item
         android:id="@+id/setting"
-        android:icon="@drawable/ic_man"
+        android:icon="@drawable/ic_setting"
         android:title="Settings" />
 
 </menu>
