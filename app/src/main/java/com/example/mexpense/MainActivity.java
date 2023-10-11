@@ -67,7 +67,8 @@ public class MainActivity extends BaseActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replaceFragment(new ExpenseFormFragment());
+
+                //replaceFragment(new ExpenseFormFragment());
             }
         });
         initiateActionBar();
