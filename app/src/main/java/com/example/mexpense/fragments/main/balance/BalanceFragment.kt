@@ -7,26 +7,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.mexpense.R
+import com.example.mexpense.base.BaseMVVMFragment
+import com.example.mexpense.databinding.FragmentBalanceBinding
+import com.example.mexpense.services.SqlService
 
-class BalanceFragment : Fragment() {
-
+class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel>() {
+    private lateinit var viewBinding: FragmentBalanceBinding
+    private lateinit var sqlService: SqlService
     companion object {
         fun newInstance() = BalanceFragment()
     }
 
-    private lateinit var viewModel: BalanceViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_balance, container, false)
+    override fun getViewModelClass(): Class<BalanceViewModel> {
+        return BalanceViewModel::class.java
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(BalanceViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun getLayoutBinding(): FragmentBalanceBinding {
+        return FragmentBalanceBinding.inflate(layoutInflater)
     }
 
+    override fun initialize() {
+        viewBinding = getViewBinding()
+        sqlService = SqlService.getInstance(requireContext())
+    }
+
+    override fun registerViewEvent() {
+
+    }
+
+    override fun registerViewModelObs() {
+
+    }
 }

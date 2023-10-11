@@ -39,6 +39,16 @@
             android:textSize="@dimen/sp_18"/>
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_clear_db"
+        android:text="Clear history"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_70"
+        android:textSize="@dimen/sp_18"/>
+
+    <TextView
         android:id="@+id/tvLogout"
         android:text="Log out"
         android:layout_marginTop="@dimen/dp_20"

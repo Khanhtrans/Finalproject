@@ -21,6 +21,7 @@ import com.example.mexpense.fragments.main.balance.BalanceFragment;
 import com.example.mexpense.fragments.main.budget.BudgetFragment;
 import com.example.mexpense.fragments.main.expense.ExpenseFormFragment;
 import com.example.mexpense.fragments.main.expense.ExpenseMainFragment;
+import com.example.mexpense.fragments.main.home.HomeFragment;
 import com.example.mexpense.fragments.main.setting.SettingFragment;
 import com.example.mexpense.fragments.main.trip.TripMainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,13 +39,13 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new ExpenseMainFragment());
+        replaceFragment(new HomeFragment());
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new ExpenseMainFragment());
+                    replaceFragment(new HomeFragment());
                     break;
                 case R.id.balance:
                     replaceFragment(new TripMainFragment());

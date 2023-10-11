@@ -1,7 +1,7 @@
 package com.example.mexpense.fragments.main.balance
 
 import androidx.lifecycle.ViewModel
+import com.example.mexpense.base.BaseViewModel
 
-class BalanceViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class BalanceViewModel : BaseViewModel() {
 }

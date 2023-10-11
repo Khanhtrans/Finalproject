@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/id_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -11,26 +11,32 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/main_btn_home"
+            android:id="@+id/btn_view"
             android:layout_width="39dp"
             android:layout_height="39dp"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_coin" />
+            android:src="@drawable/ic_eye"
+            android:layout_marginStart="@dimen/dp_20"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvTotal"/>
 
         <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="match_parent"
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="MExpense"
+            android:text="********"
             android:textColor="@color/white_90"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/dp_80"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
         <ImageView
             android:id="@+id/main_action_btn"
@@ -42,8 +48,11 @@
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/baseline_logout_24" />
-        <!--        baseline_csv_convert_white_18-->
-        <!--        ic_common_trash_white-->
-    </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>

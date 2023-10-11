@@ -20,7 +20,9 @@
     <string name="error_valid_email_password">"Email or password invalid"</string>>
     <string name="error_email_exists">"Email existed!"</string>>
     <string name="success_message">"Register successfully!"</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="todo">TODO</string>
+
+    <string name="tab1">Week</string>
+    <string name="tab2">Month</string>
 </resources>

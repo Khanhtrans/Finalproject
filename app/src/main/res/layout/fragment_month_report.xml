@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.main.balance.BalanceFragment">
+    tools:context=".fragments.main.home.month_report.MonthReportFragment">
 
     <TextView
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Balance" />
+        android:gravity= "center"
+        android:text="month" />
 
 </FrameLayout>
