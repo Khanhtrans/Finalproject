@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.mexpense.R
 import com.example.mexpense.activity.main.notification.NotificationActivity
+import com.example.mexpense.activity.main.wallet.WalletActivity
 import com.example.mexpense.base.BaseMVVMFragment
 import com.example.mexpense.databinding.FragmentHomeBinding
 import com.example.mexpense.fragments.main.home.month_report.MonthReportFragment
@@ -59,6 +60,11 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
             val intent = Intent(requireActivity(), NotificationActivity::class.java)
             requireActivity().startActivity(intent)
             Toast.makeText(requireContext(),"show history",Toast.LENGTH_SHORT).show()
+        }
+
+        viewBinding.tvSeeMoreWallet.setOnClickListener {
+            val intent = Intent(requireActivity(),WalletActivity::class.java)
+            requireActivity().startActivity(intent)
         }
     }
 

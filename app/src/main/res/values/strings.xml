@@ -26,6 +26,14 @@
     <string name="tab1">Week</string>
     <string name="tab2">Month</string>
     <string name="title_activity_notification">NotificationActivity</string>
+    <string-array name="Category">
+        <item>Food &amp; Beverage</item>
+        <item>Transportation</item>
+        <item>Water, Electricity Bill</item>
+        <item>Internet Bill</item>
+        <item>Other Utility Bills</item>
+    </string-array>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

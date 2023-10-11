@@ -8,8 +8,42 @@
     android:layout_height="match_parent"
     android:background="@color/white_90"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.main.register.RegisterFragment">
+    tools:context=".activity.main.wallet.AddWalletActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white_90"
+        android:gravity="center_vertical">
 
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Cancel"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="@dimen/sp_18"
+            android:textColor="@color/black_80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Add Wallet"
+            android:textColor="@color/black_90"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,15 +58,6 @@
 
             android:layout_gravity="center_horizontal"
             android:padding="24dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/action_register"
-                android:id="@+id/loginText"
-                android:textSize="36sp"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textColor="@color/purple"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutEmail"
                 android:layout_width="match_parent"
@@ -44,14 +69,14 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/txtUsername"
+                    android:id="@+id/edt_name"
                     android:background="@drawable/custom_edittext"
                     android:drawablePadding="8dp"
-                    android:hint="Email"
+                    android:hint="Name"
                     android:padding="8dp"
                     android:textColor="@color/white_90"
                     android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="40dp" />
+                    android:layout_marginTop="10dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -65,10 +90,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/txtName"
+                    android:id="@+id/edt_currency"
                     android:background="@drawable/custom_edittext"
                     android:drawablePadding="8dp"
-                    android:hint="Full Name"
+                    android:hint="Currency"
                     android:padding="8dp"
                     android:textColor="@color/white_90"
                     android:textColorHighlight="@color/cardview_dark_background"
@@ -89,40 +114,29 @@
                     android:id="@+id/txtPassword"
                     android:background="@drawable/custom_edittext"
                     android:drawablePadding="8dp"
-                    android:hint="Password"
-                    android:inputType="textPassword"
+                    android:hint="Initial Balance"
                     android:padding="8dp"
                     android:textColor="@color/white_90"
                     android:textColorHighlight="@color/cardview_dark_background"
                     android:layout_marginTop="40dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutRePassword"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txtView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:endIconMode="clear_text">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:id="@+id/txtRePassword"
-                    android:background="@drawable/custom_edittext"
-                    android:drawablePadding="8dp"
-                    android:hint="Confirm Password"
-                    android:padding="8dp"
-                    android:inputType="textPassword"
-                    android:textColor="@color/white_90"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="40dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="Select category:"
+                android:textSize = "@dimen/sp_20" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/btn_register"
-                android:text="@string/action_register"
+                android:id="@+id/btn_save"
+                android:text="Save"
                 android:textColor="@color/white_90"
 
                 android:textSize="18sp"
@@ -132,15 +146,5 @@
                 app:cornerRadius = "20dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Back to Login"
-        android:textSize="14sp"
-        android:textAlignment="center"
-        android:id="@+id/txtBackLogin"
-        android:textColor="@color/purple"
-        android:layout_marginBottom="20dp"/>
 
 </LinearLayout>

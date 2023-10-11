@@ -15,6 +15,26 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/idBarChart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_weight="1"
+        android:layout_height="0dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Spending"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_20"
+        android:textColor="@color/black_60"
+        android:layout_margin="@dimen/dp_10"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Food"
+        android:textStyle="normal"
+        android:textSize="@dimen/sp_20"
+        android:textColor="@color/black_60"
+        android:layout_margin="@dimen/dp_10"
+        />
 
 </LinearLayout>

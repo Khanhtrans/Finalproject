@@ -32,6 +32,12 @@
         android:theme="@style/Theme.MExpense"
         tools:targetApi="31">
         <activity
+            android:name=".activity.main.wallet.WalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.main.wallet.AddWalletActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.main.notification.NotificationActivity"
             android:exported="false"
             android:label="@string/title_activity_notification"
@@ -61,9 +67,7 @@
         <!-- android:windowSoftInputMode="adjustResize" -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

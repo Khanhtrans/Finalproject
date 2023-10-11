@@ -79,12 +79,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="My Wallet"/>
             <TextView
+                android:id="@+id/tv_see_more_wallet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="see all"
                 android:textStyle="italic"
                 android:textColor="@color/black_60"
                 android:layout_margin="@dimen/dp_10"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -172,7 +175,20 @@
         android:layout_height="@dimen/dp_300"
         android:background="@drawable/rounded_button_border"
         android:layout_margin="@dimen/dp_16"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No transaction recorded"
+            android:textStyle="italic"
+            android:gravity="start"
+            android:textColor="@color/black_60"
+            android:layout_margin="@dimen/dp_10"
+            />
+    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"/>
     </LinearLayout>
 
 </ScrollView>
