@@ -1,15 +1,7 @@
 package com.example.mexpense.fragments.main.setting
 
-import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.mexpense.LoginActivity
-import com.example.mexpense.R
+import com.example.mexpense.activity.main.login.LoginActivity
 import com.example.mexpense.base.BaseMVVMFragment
 import com.example.mexpense.base.SharePreUtil
 import com.example.mexpense.databinding.FragmentSettingBinding
@@ -44,7 +36,7 @@ class SettingFragment : BaseMVVMFragment<FragmentSettingBinding,SettingViewModel
 
             SharePreUtil.SetShareBoolean(requireContext(),Constants.KEY_IS_LOGIN,false)
 
-            val intent = Intent(activity,LoginActivity::class.java)
+            val intent = Intent(activity, LoginActivity::class.java)
             activity?.startActivity(intent)
             activity?.finish()
         }

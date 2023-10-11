@@ -15,4 +15,8 @@
         <item name="colorPrimaryVariant">#0F9D58</item>
         <item name="colorOnPrimary">#9E7E7E</item>
     </style>
+
+    <style name="Theme.MExpense.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MExpense.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
