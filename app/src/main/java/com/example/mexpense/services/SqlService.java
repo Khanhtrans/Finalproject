@@ -7,6 +7,12 @@ import static com.example.mexpense.ultilities.Constants.COLUMN_USER_EMAIL;
 import static com.example.mexpense.ultilities.Constants.COLUMN_USER_ID;
 import static com.example.mexpense.ultilities.Constants.COLUMN_USER_NAME;
 import static com.example.mexpense.ultilities.Constants.COLUMN_USER_PASSWORD;
+import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_CATEGORY;
+import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_CURRENCY;
+import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_ID;
+import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_INITIAL_BALANCE;
+import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_NAME;
+import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_USER_ID;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,11 +24,13 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.mexpense.entity.User;
+import com.example.mexpense.entity.Wallet;
 import com.example.mexpense.ultilities.Constants;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SqlService extends SQLiteOpenHelper {
 
@@ -30,6 +38,7 @@ public class SqlService extends SQLiteOpenHelper {
     public static final String TRIPS_TABLE_NAME = "trips_table";
     public static final String EXPENSE_TABLE_NAME = "expenses_table";
     public static final String TABLE_USER = "user_table";
+    public static final String TABLE_WALLET = "wallet_table";
     public static final String TABLE_CATEGORY = "category_table";
 
     private SQLiteDatabase database;
@@ -79,6 +88,16 @@ public class SqlService extends SQLiteOpenHelper {
             EXPENSE_TABLE_NAME, Constants.COLUMN_ID_EXPENSE, Constants.COLUMN_CATEGORY_EXPENSE, Constants.COLUMN_COST_EXPENSE, Constants.COLUMN_AMOUNT_EXPENSE, Constants.COLUMN_DATE_EXPENSE, Constants.COLUMN_COMMENT_EXPENSE, Constants.COLUMN_TRIP_ID_EXPENSE, Constants.COLUMN_LATITUDE_EXPENSE, Constants.COLUMN_LONGITUDE_EXPENSE, Constants.COLUMN_IMAGE_PATH_EXPENSE
     );
 
+    // create tbl wallet
+    private static final String CREATE_WALLET_TABLE = "CREATE TABLE " + TABLE_WALLET + "("
+            + COLUMN_WALLET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_WALLET_NAME + " TEXT,"
+            + COLUMN_WALLET_CURRENCY + " TEXT,"
+            + COLUMN_WALLET_USER_ID + " TEXT,"
+            + COLUMN_WALLET_INITIAL_BALANCE + " MONEY"
+            + ")";
+    // drop table sql query
+    private static final String DROP_WALLET_TABLE = "DROP TABLE IF EXISTS " + TABLE_WALLET;
+    //create user table
     private static final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
             + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")";
@@ -96,6 +115,7 @@ public class SqlService extends SQLiteOpenHelper {
         database.execSQL(TRIP_DATABASE_CREATE);
         database.execSQL(EXPENSE_DATABASE_CREATE);
         database.execSQL(CREATE_USER_TABLE);
+        database.execSQL(CREATE_WALLET_TABLE);
         database.execSQL(CREATE_CATEGORY_TABLE);
     }
 
@@ -104,6 +124,7 @@ public class SqlService extends SQLiteOpenHelper {
         try{
             database.execSQL("DROP TABLE IF EXISTS " + EXPENSE_TABLE_NAME);
             database.execSQL("DROP TABLE IF EXISTS " + TRIPS_TABLE_NAME);
+            database.execSQL(DROP_USER_TABLE);
             database.execSQL(DROP_USER_TABLE);
             database.execSQL(DROP_CATEGORY_TABLE);
         }
@@ -305,6 +326,85 @@ public class SqlService extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+
+    /**
+     * This method is to create wallet record
+     *
+     * @param wallet
+     */
+    public void addWallet(Wallet wallet) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_WALLET_NAME, wallet.getName());
+        values.put(COLUMN_WALLET_CURRENCY, wallet.getCurrency());
+        values.put(COLUMN_WALLET_INITIAL_BALANCE, wallet.getInitialBalance());
+        values.put(COLUMN_WALLET_CATEGORY, wallet.getCategory());
+        values.put(COLUMN_WALLET_USER_ID, wallet.getUserId());
+        // Inserting Row
+        db.insert(TABLE_USER, null, values);
+        db.close();
+    }
+    /**
+     * This method is to fetch all wallet and return the list of wallet records
+     *
+     * @return list
+     */
+    public List<Wallet> getAllWallet() {
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_WALLET_ID,
+                COLUMN_WALLET_NAME,
+                COLUMN_WALLET_CURRENCY,
+                COLUMN_WALLET_INITIAL_BALANCE,
+                COLUMN_WALLET_CATEGORY,
+                COLUMN_WALLET_USER_ID
+        };
+        // sorting orders
+        String sortOrder =
+                COLUMN_WALLET_NAME + " ASC";
+        List<Wallet> walletList = new ArrayList<Wallet>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // query the wallet table
+        Cursor cursor = db.query(TABLE_WALLET, //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Wallet wallet = new Wallet();
+                wallet.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_ID))));
+                wallet.setName(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_NAME)));
+                wallet.setCurrency(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CURRENCY)));
+                wallet.setInitialBalance(cursor.getLong(cursor.getColumnIndex(COLUMN_WALLET_INITIAL_BALANCE)));
+                wallet.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CATEGORY)));
+                // Adding wallet record to list
+                walletList.add(wallet);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return user list
+        return walletList;
+    }
+
+    public List<Wallet> getMyWallets(int userID) {
+        List<Wallet> wallets = getAllWallet();
+        List<Wallet> mine = wallets.stream().filter(w -> w.getUserId() == userID).collect(Collectors.toList());
+        return mine;
+    }
+
+    public Long totalMoney(int userID){
+        List<Wallet> wallets = getMyWallets(userID);
+        long total = 0;
+        for (int i = 0; i < wallets.size(); i++) {
+            total += wallets.get(i).getInitialBalance();
+        }
+        return total;
     }
 }
 

@@ -25,6 +25,11 @@
 
     <string name="tab1">Week</string>
     <string name="tab2">Month</string>
+    <string-array name="wallet_category_array">
+        <item>Visa</item>
+        <item>Paypal</item>
+        <item>Salary</item>
+    </string-array>
     <string name="title_activity_notification">NotificationActivity</string>
     <string-array name="Category">
         <item>Food &amp; Beverage</item>
