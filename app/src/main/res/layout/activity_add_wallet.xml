@@ -111,7 +111,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/txtPassword"
+                    android:id="@+id/edt_initial_balance"
                     android:background="@drawable/custom_edittext"
                     android:drawablePadding="8dp"
                     android:hint="Initial Balance"
@@ -129,7 +129,9 @@
                 android:textSize = "@dimen/sp_20" />
 
             <Spinner
+                android:layout_marginTop="@dimen/dp_10"
                 android:id="@+id/spinner"
+                android:popupBackground="@color/black_60"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <Button

@@ -58,6 +58,7 @@ public class Constants {
 
     public static final String SHARE_NAME = "my_share";
     public static final String KEY_NAME = "key_name";
+    public static final String KEY_USER_ID = "key_user_id";
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_IS_LOGIN = "key_is_login";
 

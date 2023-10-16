@@ -1,6 +1,6 @@
 package com.example.mexpense.entity
 
-class Wallet {
+class Wallet() {
     var id: Int = 0
     var name: String?= null
     var currency: String?= null

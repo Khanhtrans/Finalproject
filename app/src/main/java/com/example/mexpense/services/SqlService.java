@@ -90,8 +90,10 @@ public class SqlService extends SQLiteOpenHelper {
 
     // create tbl wallet
     private static final String CREATE_WALLET_TABLE = "CREATE TABLE " + TABLE_WALLET + "("
-            + COLUMN_WALLET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_WALLET_NAME + " TEXT,"
+            + COLUMN_WALLET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_WALLET_NAME + " TEXT,"
             + COLUMN_WALLET_CURRENCY + " TEXT,"
+            + COLUMN_WALLET_CATEGORY + " TEXT,"
             + COLUMN_WALLET_USER_ID + " TEXT,"
             + COLUMN_WALLET_INITIAL_BALANCE + " MONEY"
             + ")";
@@ -342,7 +344,7 @@ public class SqlService extends SQLiteOpenHelper {
         values.put(COLUMN_WALLET_CATEGORY, wallet.getCategory());
         values.put(COLUMN_WALLET_USER_ID, wallet.getUserId());
         // Inserting Row
-        db.insert(TABLE_USER, null, values);
+        db.insert(TABLE_WALLET, null, values);
         db.close();
     }
     /**
@@ -382,6 +384,7 @@ public class SqlService extends SQLiteOpenHelper {
                 wallet.setCurrency(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CURRENCY)));
                 wallet.setInitialBalance(cursor.getLong(cursor.getColumnIndex(COLUMN_WALLET_INITIAL_BALANCE)));
                 wallet.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CATEGORY)));
+                wallet.setUserId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_USER_ID))));
                 // Adding wallet record to list
                 walletList.add(wallet);
             } while (cursor.moveToNext());
