@@ -46,6 +46,14 @@ public class Constants {
     public static final String COLUMN_CATEGORY_ID = "category_id";
     public static final String COLUMN_CATEGORY_NAME = "category_name";
 
+    //wallet
+    public static final String COLUMN_WALLET_ID = "wallet_id";
+    public static final String COLUMN_WALLET_CURRENCY = "wallet_currency";
+    public static final String COLUMN_WALLET_NAME = "wallet_name";
+    public static final String COLUMN_WALLET_INITIAL_BALANCE = "wallet_initial_balance";
+    public static final String COLUMN_WALLET_CATEGORY = "wallet_category";
+    public static final String COLUMN_WALLET_USER_ID = "user_id";
+
 // share preference
 
     public static final String SHARE_NAME = "my_share";
