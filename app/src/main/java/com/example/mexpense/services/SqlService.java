@@ -380,7 +380,7 @@ public class SqlService extends SQLiteOpenHelper {
                 wallet.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_ID))));
                 wallet.setName(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_NAME)));
                 wallet.setCurrency(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CURRENCY)));
-                wallet.setInitialBalance(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_INITIAL_BALANCE)));
+                wallet.setInitialBalance(cursor.getLong(cursor.getColumnIndex(COLUMN_WALLET_INITIAL_BALANCE)));
                 wallet.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CATEGORY)));
                 // Adding wallet record to list
                 walletList.add(wallet);
