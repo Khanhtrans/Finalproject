@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mexpense.activity.main.transaction.AddTransactionActivity;
 import com.example.mexpense.base.BaseActivity;
 import com.example.mexpense.databinding.ActivityMainBinding;
 import com.example.mexpense.fragments.main.balance.BalanceFragment;
@@ -67,7 +69,8 @@ public class MainActivity extends BaseActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(MainActivity.this, AddTransactionActivity.class);
+                startActivity(intent);
                 //replaceFragment(new ExpenseFormFragment());
             }
         });

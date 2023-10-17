@@ -26,6 +26,7 @@ class WalletActivity : BaseActivity() {
 
             walletAdapter.setItems(databaseHelper.getMyWallets(myId))
             binding.rvWallets.adapter = walletAdapter
+            binding.tvTotalBalance.text = databaseHelper.totalMoney(myId).toString()
         }
     }
 

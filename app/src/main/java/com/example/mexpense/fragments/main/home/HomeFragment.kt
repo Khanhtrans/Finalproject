@@ -8,17 +8,28 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.mexpense.R
 import com.example.mexpense.activity.main.notification.NotificationActivity
 import com.example.mexpense.activity.main.wallet.WalletActivity
+import com.example.mexpense.activity.main.wallet.WalletAdapter
 import com.example.mexpense.base.BaseMVVMFragment
+import com.example.mexpense.base.SharePreUtil
 import com.example.mexpense.databinding.FragmentHomeBinding
+import com.example.mexpense.entity.Transaction
+import com.example.mexpense.exts.gone
+import com.example.mexpense.fragments.main.balance.TransactionAdapter
 import com.example.mexpense.fragments.main.home.month_report.MonthReportFragment
 import com.example.mexpense.fragments.main.home.week_report.WeekReportFragment
 import com.example.mexpense.services.SqlService
+import com.example.mexpense.ultilities.Constants
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
     private lateinit var viewBinding: FragmentHomeBinding
     private lateinit var sqlService: SqlService
     private var isShow = true
+    private val transactionAdapter by lazy {
+        TransactionAdapter(
+            onClicked = ::onClicked,
+        )
+    }
     override fun getViewModelClass(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
@@ -42,7 +53,13 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
                 return ResourceStore.tabList.size
             }
         }
-
+        val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
+        val trans = sqlService.getMyTransaction(myId)
+        if (trans.size !=0) viewBinding.tvNoTrans.gone()
+        transactionAdapter.setItems(trans)
+        viewBinding.rvTrans.apply {
+            adapter = transactionAdapter
+        }
         //renderTabLayer
         TabLayoutMediator(viewBinding.tabLayout, viewBinding.viewpager) { tab, position ->
             tab.text = getString(ResourceStore.tabList[position])
@@ -52,7 +69,9 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
 
     override fun registerViewEvent() {
         viewBinding.btnView.setOnClickListener {
-            if (isShow) viewBinding.tvTotal.text = "2.000.000"
+            val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
+
+            if (isShow) viewBinding.tvTotal.text = sqlService.totalMoney(myId).toString()
             else viewBinding.tvTotal.text = "********"
             isShow = !isShow
         }
@@ -71,7 +90,9 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
     override fun registerViewModelObs() {
     }
 
+    fun onClicked(transaction: Transaction){
 
+    }
 }
 
 interface ResourceStore {

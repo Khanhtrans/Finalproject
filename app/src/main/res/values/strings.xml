@@ -31,12 +31,18 @@
         <item>Salary</item>
     </string-array>
     <string name="title_activity_notification">NotificationActivity</string>
-    <string-array name="Category">
+    <string-array name="trans_category">
         <item>Food &amp; Beverage</item>
         <item>Transportation</item>
         <item>Water, Electricity Bill</item>
         <item>Internet Bill</item>
         <item>Other Utility Bills</item>
+        <item>Home Maintenance</item>
+        <item>Medical Check-up</item>
+        <item>Education</item>
+        <item>Traveling</item>
+        <item>Other Expense</item>
+
     </string-array>
 
     <string name="large_text">
@@ -129,4 +135,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="add_transaction_title">Add Transaction</string>
+    <string name="btn_cancel_content">Cancel</string>
 </resources>

@@ -43,8 +43,11 @@ import com.example.mexpense.entity.Wallet;
 import com.example.mexpense.ultilities.Constants;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -375,6 +378,7 @@ public class SqlService extends SQLiteOpenHelper {
      */
     public void addTrans(Transaction transaction) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        DateFormat sdf = new SimpleDateFormat("DD-MMM-YYYY", Locale.US);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_TRANS_NAME, transaction.getName());
@@ -382,9 +386,10 @@ public class SqlService extends SQLiteOpenHelper {
         values.put(COLUMN_TRANS_AMOUNT, transaction.getAmount());
         values.put(COLUMN_TRANS_CATEGORY, transaction.getCategory());
 
-        values.put(COLUMN_TRANS_DATE, dateFormat.format(transaction.getDate()) );
+        values.put(COLUMN_TRANS_DATE, transaction.getDate() );
+        values.put(COLUMN_TRANS_RETURN_DATE, transaction.getReturnDate() );
 
-        values.put(COLUMN_TRANS_RETURN_DATE, dateFormat.format(transaction.getReturnDate()));
+
         values.put(COLUMN_TRANS_DESTINATION, transaction.getDestination());
         values.put(COLUMN_TRANS_TRANSPORTATION, transaction.getTransportation());
 
