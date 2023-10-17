@@ -54,6 +54,23 @@ public class Constants {
     public static final String COLUMN_WALLET_CATEGORY = "wallet_category";
     public static final String COLUMN_WALLET_USER_ID = "user_id";
 
+    // TRANSACTION
+    public static final String COLUMN_TRANS_ID = "trans_id";
+    public static final String COLUMN_TRANS_NAME = "trans_name";
+    public static final String COLUMN_TRANS_CATEGORY = "trans_category";
+    public static final String COLUMN_TRANS_AMOUNT = "trans_amount";
+    public static final String COLUMN_TRANS_NOTE = "trans_note";
+    public static final String COLUMN_TRANS_DATE = "trans_date";
+    public static final String COLUMN_TRANS_RETURN_DATE = "trans_return_date";
+    public static final String COLUMN_TRANS_DESTINATION = "trans_destination";
+    public static final String COLUMN_TRANS_TRANSPORTATION = "trans_transportation";
+    public static final String COLUMN_TRANS_STATUS = "trans_status";
+    public static final String COLUMN_TRANS_WALLET_ID = "wallet_id";
+    public static final String COLUMN_TRANS_USER_ID = "user_id";
+
+
+
+
 // share preference
 
     public static final String SHARE_NAME = "my_share";
