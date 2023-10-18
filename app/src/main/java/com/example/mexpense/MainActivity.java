@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
                     replaceFragment(new HomeFragment());
                     break;
                 case R.id.balance:
-                    replaceFragment(new TripMainFragment());
+                    replaceFragment(new BalanceFragment());
                     break;
                 case R.id.budgets:
                     replaceFragment(new BudgetFragment());

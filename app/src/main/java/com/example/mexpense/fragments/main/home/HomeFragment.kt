@@ -8,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.mexpense.R
 import com.example.mexpense.activity.main.notification.NotificationActivity
 import com.example.mexpense.activity.main.wallet.WalletActivity
-import com.example.mexpense.activity.main.wallet.WalletAdapter
 import com.example.mexpense.base.BaseMVVMFragment
 import com.example.mexpense.base.SharePreUtil
 import com.example.mexpense.databinding.FragmentHomeBinding
