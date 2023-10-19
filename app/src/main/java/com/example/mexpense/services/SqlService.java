@@ -4,6 +4,7 @@ package com.example.mexpense.services;
 import static com.example.mexpense.ultilities.Constants.COLUMN_CATEGORY_ID;
 import static com.example.mexpense.ultilities.Constants.COLUMN_CATEGORY_NAME;
 import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_AMOUNT;
+import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_BILL;
 import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_CATEGORY;
 import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_DATE;
 import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_DESTINATION;
@@ -130,6 +131,7 @@ public class SqlService extends SQLiteOpenHelper {
             + COLUMN_TRANS_DESTINATION + " TEXT,"
             + COLUMN_TRANS_NOTE + " TEXT,"
             + COLUMN_TRANS_TRANSPORTATION + " TEXT,"
+            + COLUMN_TRANS_BILL + " TEXT,"
             + COLUMN_TRANS_STATUS + " TEXT,"
             + COLUMN_TRANS_USER_ID + " INTEGER,"
             + COLUMN_TRANS_WALLET_ID + " INTEGER,"
@@ -392,6 +394,7 @@ public class SqlService extends SQLiteOpenHelper {
 
         values.put(COLUMN_TRANS_DESTINATION, transaction.getDestination());
         values.put(COLUMN_TRANS_TRANSPORTATION, transaction.getTransportation());
+        values.put(COLUMN_TRANS_BILL, transaction.getBill());
 
         values.put(COLUMN_TRANS_STATUS, transaction.getStatus());
 
@@ -420,6 +423,7 @@ public class SqlService extends SQLiteOpenHelper {
                 COLUMN_TRANS_RETURN_DATE,
                 COLUMN_TRANS_DESTINATION,
                 COLUMN_TRANS_TRANSPORTATION,
+                COLUMN_TRANS_BILL,
                 COLUMN_TRANS_STATUS,
                 COLUMN_TRANS_USER_ID,
                 COLUMN_TRANS_WALLET_ID,
@@ -447,6 +451,7 @@ public class SqlService extends SQLiteOpenHelper {
                 transaction.setAmount(cursor.getLong(cursor.getColumnIndex(COLUMN_TRANS_AMOUNT)));
                 transaction.setDestination(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_DESTINATION)));
                 transaction.setTransportation(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_TRANSPORTATION)));
+                transaction.setBill(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_BILL)));
                 transaction.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_CATEGORY)));
                 transaction.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_DATE)));
                 transaction.setStatus(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_STATUS))));

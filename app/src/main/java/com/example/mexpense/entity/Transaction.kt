@@ -10,6 +10,7 @@ class Transaction {
     var wallet: Int? = null
     var destination : String = ""
     var transportation: String = ""
+    var bill: String = ""
     var returnDate: String = ""
     var status: Boolean = true
     var userId: Int? = null

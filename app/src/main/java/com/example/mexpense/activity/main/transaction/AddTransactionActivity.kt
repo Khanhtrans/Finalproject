@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -35,6 +36,7 @@ class AddTransactionActivity : BaseActivity() {
     private lateinit var binding: ActivityAddTransactionBinding
     private lateinit var databaseHelper: SqlService
     var selectCate = ""
+    private var selectWallet = 0
 
     private val REQUEST_IMAGE_CAPTURE = 1
 
@@ -45,6 +47,10 @@ class AddTransactionActivity : BaseActivity() {
         databaseHelper = SqlService.getInstance(this)
         binding.tvClose.setOnClickListener { finish() }
 
+        binding.btnWallet.setOnDelayClickListener {
+            withMultiChoiceList()
+        }
+
         binding.btnSave.setOnDelayClickListener {
             val iname = selectCate
             val icategory = selectCate
@@ -54,6 +60,7 @@ class AddTransactionActivity : BaseActivity() {
             val ireturnDate = binding.tvReturnDate.text.toString().trim()
             val idestination = binding.edtDestination.text.toString().trim()
             val itransportation = binding.edtTransportation.text.toString().trim()
+            val ibill = currentPhotoPath
             val istatus = true
             val iwallet = 1
             val iuserId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
@@ -69,9 +76,10 @@ class AddTransactionActivity : BaseActivity() {
                     destination = idestination
                     transportation = itransportation
                     status = istatus
-                    wallet = iwallet
+                    wallet = selectWallet
                     userId = iuserId
                     note = inote
+                    bill = ibill
                 }
                 databaseHelper.addTrans(transaction)
                 finish()
@@ -180,6 +188,32 @@ class AddTransactionActivity : BaseActivity() {
                 }
             }
         }
+
+    }
+
+    private fun withMultiChoiceList() {
+        val userId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
+        val myWallets = databaseHelper.getMyWallets(userId)
+        val items = arrayOf<String>()
+        for (wallet in myWallets) {
+            items[wallet.id-1] = wallet.name?:""
+        }
+
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle("This is list choice dialog box")
+        builder.setSingleChoiceItems(items, -1) { dialogInterface, i ->
+            binding.tvWallet.text = items[i]
+            selectWallet = myWallets[i].id
+            dialogInterface.dismiss()
+        }
+        // Set the neutral/cancel button click listener
+        builder.setNeutralButton("Cancel") { dialog, which ->
+            // Do something when click the neutral button
+            dialog.cancel()
+        }
+
+        builder.show()
 
     }
 

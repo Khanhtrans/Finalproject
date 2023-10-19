@@ -214,6 +214,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/btn_wallet"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@drawable/rounded_button_border"

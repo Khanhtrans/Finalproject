@@ -64,6 +64,7 @@ public class Constants {
     public static final String COLUMN_TRANS_RETURN_DATE = "trans_return_date";
     public static final String COLUMN_TRANS_DESTINATION = "trans_destination";
     public static final String COLUMN_TRANS_TRANSPORTATION = "trans_transportation";
+    public static final String COLUMN_TRANS_BILL = "trans_bill";
     public static final String COLUMN_TRANS_STATUS = "trans_status";
     public static final String COLUMN_TRANS_WALLET_ID = "wallet_id";
     public static final String COLUMN_TRANS_USER_ID = "user_id";
