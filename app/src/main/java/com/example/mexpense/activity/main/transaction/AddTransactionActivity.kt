@@ -37,7 +37,7 @@ class AddTransactionActivity : BaseActivity() {
     private lateinit var binding: ActivityAddTransactionBinding
     private lateinit var databaseHelper: SqlService
     var selectCate = ""
-    private var selectWallet = 0
+    private var selectWallet: Int? = null
 
     private val REQUEST_IMAGE_CAPTURE = 1
 
@@ -66,20 +66,25 @@ class AddTransactionActivity : BaseActivity() {
             val iwallet = 1
             val iuserId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
             val transaction = Transaction()
-            val wallet = databaseHelper.getWalletFromID(selectWallet)
+            if (selectWallet == null) {
+                showToast("please select Wallet")
+                return@setOnDelayClickListener
+            }
+            val wallet = databaseHelper.getWalletFromID(selectWallet?:0)
 
             val spendedTrans = databaseHelper.getMySpend(iuserId)
             val user = databaseHelper.getUser(iuserId)
             val amountInLong = iamount.toLongOrNull()?:0
-            if (!databaseHelper.checkNewTransAvaiToAdd(selectWallet, iuserId, amountInLong)) {
+            if (!databaseHelper.checkNewTransAvaiToAdd(selectWallet?:0, iuserId, amountInLong)) {
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 val view = this.currentFocus
                 imm.hideSoftInputFromWindow(view?.windowToken, 0)
                 showToast("Over current money in wallet, re-input initial balance or select other wallet")
                 return@setOnDelayClickListener
             }
+
             if (iamount.isNotEmpty()
-                && databaseHelper.checkNewTransAvaiToAdd(selectWallet, iuserId, amountInLong)
+                && databaseHelper.checkNewTransAvaiToAdd(selectWallet?:0, iuserId, amountInLong)
                 && idate.isNotEmpty()) {
                 transaction.apply {
                     name = iname
