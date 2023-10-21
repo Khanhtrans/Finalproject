@@ -88,7 +88,6 @@
                         android:background="@drawable/custom_edittext"
                         android:drawablePadding="8dp"
                         android:hint="Password"
-                        android:text="123456"
                         android:inputType="textPassword"
                         android:padding="8dp"
                         android:textColor="@color/white_90"
