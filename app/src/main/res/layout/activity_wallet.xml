@@ -42,6 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/btn_total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_16"
@@ -78,6 +79,41 @@
                 />
         </LinearLayout>
 
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zone_add_total"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:backgroundTint="@color/black_80"
+            android:textColor="@color/black_80"
+            android:inputType="numberDecimal"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:id="@+id/edt_plus_total"/>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:id="@+id/btn_add_total"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_marginStart="@dimen/dp_10"
+                android:id="@+id/btn_cancel"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

@@ -69,8 +69,9 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
     override fun registerViewEvent() {
         viewBinding.btnView.setOnClickListener {
             val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
-
-            if (isShow) viewBinding.tvTotal.text = sqlService.totalMoney(myId).toString()
+            val total = sqlService.getUser(myId).total
+            val spended = sqlService.getMySpend(myId)
+            if (isShow) viewBinding.tvTotal.text = (total - spended).toString()
             else viewBinding.tvTotal.text = "********"
             isShow = !isShow
         }

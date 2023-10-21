@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -65,8 +66,21 @@ class AddTransactionActivity : BaseActivity() {
             val iwallet = 1
             val iuserId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
             val transaction = Transaction()
+            val wallet = databaseHelper.getWalletFromID(selectWallet)
 
-            if (iamount.isNotEmpty() && idate.isNotEmpty()) {
+            val spendedTrans = databaseHelper.getMySpend(iuserId)
+            val user = databaseHelper.getUser(iuserId)
+            val amountInLong = iamount.toLongOrNull()?:0
+            if (!databaseHelper.checkNewTransAvaiToAdd(selectWallet, iuserId, amountInLong)) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                val view = this.currentFocus
+                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                showToast("Over current money in wallet, re-input initial balance or select other wallet")
+                return@setOnDelayClickListener
+            }
+            if (iamount.isNotEmpty()
+                && databaseHelper.checkNewTransAvaiToAdd(selectWallet, iuserId, amountInLong)
+                && idate.isNotEmpty()) {
                 transaction.apply {
                     name = iname
                     category = icategory
@@ -76,7 +90,7 @@ class AddTransactionActivity : BaseActivity() {
                     destination = idestination
                     transportation = itransportation
                     status = istatus
-                    wallet = selectWallet
+                    this.wallet = selectWallet
                     userId = iuserId
                     note = inote
                     bill = ibill
@@ -115,7 +129,7 @@ class AddTransactionActivity : BaseActivity() {
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            val myFormat = "dd.MM.yyyy" // mention the format you need
+            val myFormat = "dd-MM-yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
             binding.tvDate.text = sdf.format(cal.time)
 
@@ -125,7 +139,7 @@ class AddTransactionActivity : BaseActivity() {
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            val myFormat = "dd.MM.yyyy" // mention the format you need
+            val myFormat = "dd-MM-yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
             binding.tvReturnDate.text = sdf.format(cal.time)
 
@@ -194,9 +208,9 @@ class AddTransactionActivity : BaseActivity() {
     private fun withMultiChoiceList() {
         val userId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
         val myWallets = databaseHelper.getMyWallets(userId)
-        val items = arrayOf<String>()
-        for (wallet in myWallets) {
-            items[wallet.id-1] = wallet.name?:""
+        val items = Array(myWallets.size){""}
+        for (i in myWallets.indices) {
+            items[i] = myWallets[i].name?:""
         }
 
         val builder = AlertDialog.Builder(this)
@@ -217,7 +231,7 @@ class AddTransactionActivity : BaseActivity() {
 
     }
 
-    lateinit var currentPhotoPath: String
+    var currentPhotoPath: String = ""
 
     @Throws(IOException::class)
     private fun createImageFile(): File {

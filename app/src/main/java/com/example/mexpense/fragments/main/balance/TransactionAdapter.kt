@@ -16,7 +16,9 @@ class TransactionAdapter(
 
     override fun bind(binding: ItemTransactionBinding, item: Transaction, position: Int) {
             binding.tvName.text = item.name
-        binding.tvInitialBalance.text = item.category
-        binding.tvCurrency.text = item.date
+        val amount = String.format("%,d", item.amount)
+        binding.tvAmount.text = amount
+        binding.tvNote.text = item.note
+        binding.tvDate.text = item.date
     }
 }

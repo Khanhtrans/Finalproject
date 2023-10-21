@@ -43,6 +43,8 @@ public class Constants {
     public static final String COLUMN_USER_NAME = "user_name";
     public static final String COLUMN_USER_EMAIL = "user_email";
     public static final String COLUMN_USER_PASSWORD = "user_password";
+    public static final String COLUMN_USER_TOTAL = "user_total";
+
     public static final String COLUMN_CATEGORY_ID = "category_id";
     public static final String COLUMN_CATEGORY_NAME = "category_name";
 
@@ -52,6 +54,7 @@ public class Constants {
     public static final String COLUMN_WALLET_NAME = "wallet_name";
     public static final String COLUMN_WALLET_INITIAL_BALANCE = "wallet_initial_balance";
     public static final String COLUMN_WALLET_CATEGORY = "wallet_category";
+    public static final String COLUMN_WALLET_DAY_ADD = "wallet_day_add";
     public static final String COLUMN_WALLET_USER_ID = "user_id";
 
     // TRANSACTION
@@ -77,6 +80,7 @@ public class Constants {
     public static final String SHARE_NAME = "my_share";
     public static final String KEY_NAME = "key_name";
     public static final String KEY_USER_ID = "key_user_id";
+    public static final String KEY_TOTAL = "key_total";
     public static final String KEY_EMAIL = "key_email";
     public static final String KEY_IS_LOGIN = "key_is_login";
 

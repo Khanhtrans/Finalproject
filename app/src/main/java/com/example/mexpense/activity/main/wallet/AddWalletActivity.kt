@@ -7,8 +7,10 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -62,15 +64,38 @@ class AddWalletActivity : AppCompatActivity() {
 
         binding.btnSave.setOnClickListener {
             val name = binding.edtName.text.toString().trim()
-            val initial = binding.edtInitialBalance.text.toString().trim()
+            val initial = binding.edtInitialBalance.text.toString().trim().toLongOrNull()?:0
             val currency = binding.edtCurrency.text.toString().trim()
-            if (name.isNotEmpty() && initial.isNotEmpty() && currency.isNotEmpty()) {
+            if (initial <=0) {
+                Toast.makeText(this,"Please input initial balance!",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (name.isNotEmpty() && initial>0 && currency.isNotEmpty()) {
                 val userId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
+
+                val totalWallet = databaseHelper.totalMoney(userId)
+                val user = databaseHelper.getUser(userId)
+                if (totalWallet + initial > user.total) {
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    val view = this.currentFocus
+                    imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                    Toast.makeText(this,
+                        "Over current total money, re-input initial balance",
+                        Toast.LENGTH_SHORT).show()
+
+                    return@setOnClickListener
+                }
+
+                val calendar = Calendar.getInstance()
+                val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                val date = simpleDateFormat.format(calendar.time)
+
                 val wallet = Wallet().apply {
                     this.name = name
                     this.currency = currency
-                    initialBalance = initial.toLong()
+                    initialBalance = initial
                     category = selectCate
+                    dayAdd = date
                     this.userId = userId
                 }
 

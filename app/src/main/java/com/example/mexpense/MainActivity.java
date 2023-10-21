@@ -84,6 +84,7 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.commit();
     }
 
+
     private void initiateActionBar(){
 //        // assigning ID of the toolbar to a variable
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

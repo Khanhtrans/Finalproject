@@ -29,6 +29,21 @@ public class SharePreUtil {
         int value = sp.getInt(keyname, -1);
         return value;
     }
+    /**
+     * @param context
+     * @param keyname
+     * @description shared long
+     */
+    public static long GetShareLong(Context context,String keyname){
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return sp.getLong(keyname, -1);
+    }
+    public static void SetShareLong(Context context,String keyname,long value){
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        sp.edit().putLong(keyname, value).commit();
+    }
 
     /**
      * @param context 上下文

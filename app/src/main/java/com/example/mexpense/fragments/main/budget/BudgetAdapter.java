@@ -1,9 +1,12 @@
 package com.example.mexpense.fragments.main.budget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,10 +16,12 @@ import com.example.mexpense.R;
 import com.example.mexpense.entity.Category;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-    ArrayList<Category> arrayList;
+    List<Category> arrayListFiltered;
+    List<Category> arrayList;
 
     Context context;
 
@@ -24,6 +29,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public final int TYPE_CONTENT = 1;
 
     public BudgetAdapter (ArrayList<Category> arrayList, Context context) {
+        this.arrayListFiltered = arrayList;
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -33,7 +39,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
-        if (arrayList.get(position).getName().equals("")
+        if (arrayListFiltered.get(position).getName().equals("")
         )
             return TYPE_DATE;
         else
@@ -64,18 +70,20 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
 
         if (viewHolder instanceof contentViewHolder) {
 
-            ((contentViewHolder) viewHolder).tvName.setText(arrayList.get(position).getName());
-            ((contentViewHolder) viewHolder).tvSpend.setText(String.valueOf(arrayList.get(position).getSpend()));
+            ((contentViewHolder) viewHolder).tvName.setText(arrayListFiltered.get(position).getName());
+            Long spend = arrayListFiltered.get(position).getSpend();
+            ((contentViewHolder) viewHolder).tvSpend.setText(String.format("%,d",spend));
         }
 
         if (viewHolder instanceof dateViewHolder) {
-            String typeCate = arrayList.get(position).getType();
+            String typeCate = arrayListFiltered.get(position).getType();
             ((dateViewHolder) viewHolder).type.setText(typeCate);
         }
 
@@ -103,9 +111,44 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             type = itemView.findViewById(R.id.tv_type);
         }
     }
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    arrayListFiltered = arrayList;
+                } else {
+                    List<Category> filteredList = new ArrayList<>();
+                    for (Category row : arrayList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    arrayListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = arrayListFiltered;
+                return filterResults;
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                arrayListFiltered = (ArrayList<Category>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return arrayListFiltered.size();
     }
 }

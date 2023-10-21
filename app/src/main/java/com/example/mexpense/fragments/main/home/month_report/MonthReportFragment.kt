@@ -1,21 +1,25 @@
 package com.example.mexpense.fragments.main.home.month_report
 
 import android.graphics.Color
-import android.graphics.Typeface
 import com.example.mexpense.R
 import com.example.mexpense.base.BaseMVVMFragment
+import com.example.mexpense.base.SharePreUtil
 import com.example.mexpense.databinding.FragmentMonthReportBinding
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.charts.PieChart
+import com.example.mexpense.services.SqlService
+import com.example.mexpense.ultilities.Constants
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthReportViewModel>() {
     private lateinit var viewBinding: FragmentMonthReportBinding
+    private lateinit var sqlService: SqlService
 
     lateinit var barData: BarData
 
@@ -23,22 +27,12 @@ class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthRep
 
     lateinit var barEntriesList: ArrayList<BarEntry>
 
-    private val MAX_X_VALUE = 13
-    private val GROUPS = 2
-    private val GROUP_1_LABEL = "Last month"
-    private val GROUP_2_LABEL = "This month"
-    private val BAR_SPACE = 0.1f
-    private val BAR_WIDTH = 0.8f
-    private var chart: BarChart? = null
-    private var pieChart: PieChart? = null
-    protected var tfRegular: Typeface? = null
-    protected var tfLight: Typeface? = null
+    var thisMonthTotal = 0L
+    var lastMonthTotal = 0L
 
-    private val statValues: ArrayList<Float> = ArrayList()
+    val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    val formatMonth = SimpleDateFormat("MM/yyyy", Locale.getDefault())
 
-    protected val statsTitles = arrayOf(
-        "Last month", "This month"
-    )
     companion object {
         fun newInstance() = MonthReportFragment()
     }
@@ -53,9 +47,12 @@ class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthRep
 
     override fun initialize() {
         viewBinding = getViewBinding()
+        sqlService = SqlService.getInstance(requireContext())
+
+        getData()
         getBarChartData()
 
-        barDataSet = BarDataSet(barEntriesList, "Bar Chart Data")
+        barDataSet = BarDataSet(barEntriesList, "Month Report")
 
         barData = BarData(barDataSet)
 
@@ -99,10 +96,42 @@ class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthRep
         xAxis.valueFormatter = IndexAxisValueFormatter(xVals)
         // on below line we are adding data
         // to our bar entries list
-        barEntriesList.add(BarEntry(1f, 1f,"Last month"))
-        barEntriesList.add(BarEntry(2f, 2f,"This month"))
+        barEntriesList.add(BarEntry(0.5f, lastMonthTotal.toFloat(),"Last month"))
+        barEntriesList.add(BarEntry(1.5f, thisMonthTotal.toFloat(),"This month"))
 
+    }
 
+    private fun getData() {
+        thisMonthTotal = 0
+        lastMonthTotal = 0
+        var maxTrans = 0L
+        var maxTransName = ""
+        val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
+        val myTrans = sqlService.getMyTransaction(myId)
+        for (trans in myTrans) {
+            val date = simpleDateFormat.parse(trans.date)
+            val calendar = Calendar.getInstance()
+            val currentMonth = calendar.get(Calendar.MONTH) + 1
+            if (date != null) {
+                calendar.time = date
+                val addMonth = calendar.get(Calendar.MONTH) + 1
+                if (addMonth == currentMonth) {
+                    if (maxTrans < trans.amount) {
+                        maxTrans = trans.amount
+                        maxTransName = trans.name
+                    }
+                    thisMonthTotal += trans.amount
+                }
+                val lastCal = Calendar.getInstance()
+                lastCal.add(Calendar.MONTH, -1)
+                val lastMonth = lastCal.get(Calendar.MONTH) + 1
+                if (addMonth == lastMonth) {
+                    lastMonthTotal += trans.amount
+                }
+            }
+
+        }
+        viewBinding.tvTopSpend.text = maxTransName
     }
 
 }

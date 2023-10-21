@@ -138,4 +138,8 @@
     <string name="add_transaction_title">Add Transaction</string>
     <string name="btn_cancel_content">Cancel</string>
     <string name="budget_title">Budget</string>
+    <string name="this_month">This Month</string>
+    <string name="this_month_underline"><u>This Month</u></string>
+    <string name="last_month">Last Month</string>
+    <string name="last_month_underline"><u>Last Month</u></string>
 </resources>

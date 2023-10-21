@@ -20,8 +20,10 @@ import static com.example.mexpense.ultilities.Constants.COLUMN_USER_EMAIL;
 import static com.example.mexpense.ultilities.Constants.COLUMN_USER_ID;
 import static com.example.mexpense.ultilities.Constants.COLUMN_USER_NAME;
 import static com.example.mexpense.ultilities.Constants.COLUMN_USER_PASSWORD;
+import static com.example.mexpense.ultilities.Constants.COLUMN_USER_TOTAL;
 import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_CATEGORY;
 import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_CURRENCY;
+import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_DAY_ADD;
 import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_ID;
 import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_INITIAL_BALANCE;
 import static com.example.mexpense.ultilities.Constants.COLUMN_WALLET_NAME;
@@ -51,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SqlService extends SQLiteOpenHelper {
@@ -117,6 +120,7 @@ public class SqlService extends SQLiteOpenHelper {
             + COLUMN_WALLET_CURRENCY + " TEXT,"
             + COLUMN_WALLET_CATEGORY + " TEXT,"
             + COLUMN_WALLET_USER_ID + " TEXT,"
+            + COLUMN_WALLET_DAY_ADD + " TEXT,"
             + COLUMN_WALLET_INITIAL_BALANCE + " MONEY"
             + ")";
     // drop table sql query
@@ -141,9 +145,14 @@ public class SqlService extends SQLiteOpenHelper {
     // drop table sql query
     private static final String DROP_TRANS_TABLE = "DROP TABLE IF EXISTS " + TABLE_WALLET;
     //create user table
-    private static final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
-            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")";
+    private static final String CREATE_USER_TABLE = "CREATE TABLE "
+            + TABLE_USER + "("
+            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_USER_NAME + " TEXT,"
+            + COLUMN_USER_EMAIL + " TEXT," +
+            COLUMN_USER_PASSWORD + " TEXT," +
+            COLUMN_USER_TOTAL + " MONEY"
+            + ")";
     // drop table sql query
     private static final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
 
@@ -217,9 +226,33 @@ public class SqlService extends SQLiteOpenHelper {
         values.put(COLUMN_USER_NAME, user.getName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_TOTAL, user.getTotal());
         // Inserting Row
         db.insert(TABLE_USER, null, values);
         db.close();
+    }
+
+    @SuppressLint("Range")
+    public User getUser(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_USER
+                + " WHERE " + COLUMN_USER_ID + " = " + id;
+        Cursor cursor = db.rawQuery(sql, null);
+        User user = new User();
+
+        // Read data, I simplify cursor in one line
+        if (cursor.moveToFirst()) {
+
+            // Get imageData in byte[]. Easy, right?
+            user.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))));
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+            user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+            user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+            user.setTotal(cursor.getLong(cursor.getColumnIndex(COLUMN_USER_TOTAL)));
+        }
+        cursor.close();
+        db.close();
+        return user;
     }
     /**
      * This method is to fetch all user and return the list of user records
@@ -232,7 +265,8 @@ public class SqlService extends SQLiteOpenHelper {
                 COLUMN_USER_ID,
                 COLUMN_USER_EMAIL,
                 COLUMN_USER_NAME,
-                COLUMN_USER_PASSWORD
+                COLUMN_USER_PASSWORD,
+                COLUMN_USER_TOTAL
         };
         // sorting orders
         String sortOrder =
@@ -260,6 +294,7 @@ public class SqlService extends SQLiteOpenHelper {
                 user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
                 user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
                 user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+                user.setTotal(cursor.getLong(cursor.getColumnIndex(COLUMN_USER_TOTAL)));
                 // Adding user record to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -280,6 +315,7 @@ public class SqlService extends SQLiteOpenHelper {
         values.put(COLUMN_USER_NAME, user.getName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_TOTAL, user.getTotal());
         // updating row
         db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",
                 new String[]{String.valueOf(user.getId())});
@@ -479,12 +515,34 @@ public class SqlService extends SQLiteOpenHelper {
         return mine;
     }
 
+    public Long getMySpend(int userID) {
+        List<Transaction> myTrans = getMyTransaction(userID);
+        Long total = 0L;
+        for (int i =0;i <myTrans.size();i++) {
+            total+= myTrans.get(i).getAmount();
+        }
+        return total;
+    }
+
     public @Nullable Wallet getWalletFromID(int walletID) {
         List<Wallet> wallet = getAllWallet();
         return wallet.stream()
                 .filter(w -> w.getId() == walletID)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Boolean checkNewTransAvaiToAdd(int walletId, int userId, Long newAmount) {
+        List<Transaction> trans = getMyTransaction(userId);
+        Wallet wallet = getWalletFromID(walletId);
+        long totalSpend = 0L;
+        for (int i = 0; i< trans.size(); i++) {
+            if (trans.get(i).getWallet() != null && trans.get(i).getWallet() == walletId) {
+                totalSpend += trans.get(i).getAmount();
+            }
+        }
+
+        return newAmount < (Objects.requireNonNull(wallet).getInitialBalance() - totalSpend);
     }
 
     public Long totalMoney(int userID){
@@ -508,6 +566,7 @@ public class SqlService extends SQLiteOpenHelper {
         values.put(COLUMN_WALLET_CURRENCY, wallet.getCurrency());
         values.put(COLUMN_WALLET_INITIAL_BALANCE, wallet.getInitialBalance());
         values.put(COLUMN_WALLET_CATEGORY, wallet.getCategory());
+        values.put(COLUMN_WALLET_DAY_ADD, wallet.getDayAdd());
         values.put(COLUMN_WALLET_USER_ID, wallet.getUserId());
         // Inserting Row
         db.insert(TABLE_WALLET, null, values);
@@ -526,6 +585,7 @@ public class SqlService extends SQLiteOpenHelper {
                 COLUMN_WALLET_CURRENCY,
                 COLUMN_WALLET_INITIAL_BALANCE,
                 COLUMN_WALLET_CATEGORY,
+                COLUMN_WALLET_DAY_ADD,
                 COLUMN_WALLET_USER_ID
         };
         // sorting orders
@@ -550,6 +610,7 @@ public class SqlService extends SQLiteOpenHelper {
                 wallet.setCurrency(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CURRENCY)));
                 wallet.setInitialBalance(cursor.getLong(cursor.getColumnIndex(COLUMN_WALLET_INITIAL_BALANCE)));
                 wallet.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_CATEGORY)));
+                wallet.setDayAdd(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_DAY_ADD)));
                 wallet.setUserId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_WALLET_USER_ID))));
                 // Adding wallet record to list
                 walletList.add(wallet);

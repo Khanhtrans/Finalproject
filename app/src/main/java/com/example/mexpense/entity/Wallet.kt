@@ -6,6 +6,7 @@ class Wallet() {
     var currency: String?= null
     var initialBalance: Long = 0
     var category: String?= null
+    var dayAdd: String?= null
     var userId: Int?= null
 }
 
