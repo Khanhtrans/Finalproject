@@ -16,8 +16,14 @@ abstract class BaseActivity : AppCompatActivity() {
      *
      * @param message - String
      */
-    protected fun showToast(message: String?) {
+    fun showToast(message: String?) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    protected fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = this.currentFocus
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     /**

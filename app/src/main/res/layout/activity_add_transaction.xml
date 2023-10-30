@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/container"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_90"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.main.transaction.AddTransactionActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white_90"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/btn_cancel_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="@dimen/sp_18"
+            android:textColor="@color/black_80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/add_transaction_title"
+            android:textColor="@color/black_90"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.core.widget.NestedScrollView
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_20"
+            app:layout_constraintBottom_toTopOf="@+id/btn_save"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="20dp"
+                android:background="@drawable/custom_edittext">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_button_border"
+                        android:padding="@dimen/dp_10"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="30dp"
+                            android:layout_height="@dimen/dp_30"
+                            android:src="@drawable/ic_balance"
+                            app:tint="@color/blue_light" />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:id="@+id/edt_amount"
+                            android:hint="Amount"
+                            android:text="0"
+                            android:inputType="number"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:textSize="@dimen/sp_18"
+                            android:textColor="@color/white_90"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:textSize="@dimen/sp_18"
+                        android:text="Select category"/>
+
+                    <Spinner
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/spinner"
+                        android:popupBackground="@color/black_60"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/rounded_button_border"
+                        android:padding="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:orientation="horizontal">
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/edt_note"
+                            android:hint="Note"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:textSize="@dimen/sp_18"
+                            android:textColor="@color/white_90"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/btn_select_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/rounded_button_border"
+                        android:padding="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="30dp"
+                            android:layout_height="@dimen/dp_30"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/blue_light" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_date"
+                            android:layout_gravity="center_vertical"
+                            android:text="Date"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:textSize="@dimen/sp_18" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/detail_zone"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="@drawable/rounded_button_border"
+                            android:padding="@dimen/dp_10"
+                            android:layout_marginBottom="@dimen/dp_10"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/edt_destination"
+                                android:hint="Destination"
+                                android:layout_marginStart="@dimen/dp_10"
+                                android:textSize="@dimen/sp_18"
+                                android:textColor="@color/white_90"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="@drawable/rounded_button_border"
+                            android:padding="@dimen/dp_10"
+                            android:layout_marginBottom="@dimen/dp_10"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/edt_transportation"
+                                android:hint="Transportation"
+                                android:layout_marginStart="@dimen/dp_10"
+                                android:textSize="@dimen/sp_18"
+                                android:textColor="@color/white_90"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/btn_select_return_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="@drawable/rounded_button_border"
+                            android:padding="@dimen/dp_10"
+                            android:layout_marginBottom="@dimen/dp_10"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_gravity="center_vertical"
+                                android:layout_width="30dp"
+                                android:layout_height="@dimen/dp_30"
+                                android:src="@drawable/ic_calendar"
+                                app:tint="@color/blue_light" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_return_date"
+                                android:layout_gravity="center_vertical"
+                                android:text="Return Date"
+                                android:layout_marginStart="@dimen/dp_10"
+                                android:textSize="@dimen/sp_18" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/btn_wallet"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/rounded_button_border"
+                        android:padding="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="30dp"
+                            android:layout_height="@dimen/dp_30"
+                            android:src="@drawable/ic_balance"
+                            app:tint="@color/blue_light" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_wallet"
+                            android:layout_gravity="center_vertical"
+                            android:text="Wallet"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:textSize="@dimen/sp_18" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_take_bill"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/rounded_button_border"
+                        android:padding="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
+
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="30dp"
+                            android:layout_height="@dimen/dp_30"
+                            android:src="@drawable/ic_bill"
+                            app:tint="@color/blue_light" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_bill"
+                            android:layout_gravity="center_vertical"
+                            android:text="Bill"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:textSize="@dimen/sp_18" />
+                        <ImageView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="30dp"
+                            android:layout_height="@dimen/dp_30"
+                            android:src="@drawable/ic_camera"
+                            app:tint="@color/blue_light" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/btn_save"
+            android:text="Save"
+            android:textColor="@color/white_90"
+
+            android:textSize="18sp"
+            android:background="@drawable/round_menu_home_background"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/purple_200"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cornerRadius = "20dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</LinearLayout>

@@ -104,19 +104,19 @@ public class ExpenseMainFragment extends Fragment implements ExpenseAdapter.Item
         );
         expenseService.getExpenses(mViewModel.expenseList, tripId);
 
-        FloatingActionButton btnAdd = binding.btnAddExpense;
-        btnAdd.setOnClickListener(view -> {
-            Bundle bundle = getBundle(-1);
-            Navigation.findNavController(getView()).navigate(R.id.expenseFormFragment, bundle);
-        });
+       // FloatingActionButton btnAdd = binding.btnAddExpense;
+//        btnAdd.setOnClickListener(view -> {
+//            Bundle bundle = getBundle(-1);
+//            Navigation.findNavController(getView()).navigate(R.id.expenseFormFragment, bundle);
+//        });
 
-        AppCompatActivity app = (AppCompatActivity)getActivity();
-        ActionBar ab = app.getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setDisplayShowHomeEnabled(true);
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeAsUpIndicator(R.drawable.ic_back);
-        ab.setTitle("Trips");
+//        AppCompatActivity app = (AppCompatActivity)getActivity();
+//        ActionBar ab = app.getSupportActionBar();
+//        ab.setHomeButtonEnabled(true);
+//        ab.setDisplayShowHomeEnabled(true);
+//        ab.setDisplayHomeAsUpEnabled(true);
+//        ab.setHomeAsUpIndicator(R.drawable.ic_back);
+//        ab.setTitle("Trips");
         setHasOptionsMenu(true);
 
         return binding.getRoot();

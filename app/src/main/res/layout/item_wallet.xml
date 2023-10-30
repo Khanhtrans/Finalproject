@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_button_border"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_balance"
+        app:tint="@color/blue_light" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_20"
+            android:textColor="@color/black_60"
+            android:layout_margin="@dimen/dp_10" />
+        <TextView
+            android:id="@+id/tv_initial_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2.000.000"
+            android:textStyle="italic"
+            android:textColor="@color/black_60"
+            android:layout_margin="@dimen/dp_10" />
+        <TextView
+            android:id="@+id/tv_currency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="vnd"
+            android:textStyle="italic"
+            android:textColor="@color/black_60"
+            android:layout_margin="@dimen/dp_10" />
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Visa"
+            android:textStyle="italic"
+            android:textColor="@color/black_60"
+            android:layout_margin="@dimen/dp_10" />
+    </LinearLayout>
+
+</LinearLayout>

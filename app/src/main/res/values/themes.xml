@@ -1,21 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MExpense" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.MExpense" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="fontFamily">@font/founders_grotesk_medium</item>
-        <item name="colorPrimary">@color/grey</item>
-        <item name="colorPrimaryDark">@color/grey</item>
-        <item name="colorAccent">@color/grey</item>
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_200</item>
+        <item name="colorOnPrimary">#E6473D3D</item>
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.MExpense.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+
+    <style name="Theme.MExpense.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#0F9D58</item>
+        <item name="colorPrimaryVariant">#0F9D58</item>
+        <item name="colorOnPrimary">#9E7E7E</item>
     </style>
 
-    <style name="Theme.UpBrain.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.MExpense.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.UpBrain.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style name="Theme.MExpense.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
