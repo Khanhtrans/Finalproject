@@ -19,6 +19,7 @@ import com.example.mexpense.fragments.main.home.week_report.WeekReportFragment
 import com.example.mexpense.services.SqlService
 import com.example.mexpense.ultilities.Constants
 import com.google.android.material.tabs.TabLayoutMediator
+import java.text.DecimalFormat
 
 class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
     private lateinit var viewBinding: FragmentHomeBinding
@@ -70,8 +71,9 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
         viewBinding.btnView.setOnClickListener {
             val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
             val total = sqlService.getUser(myId).total
-            val spended = sqlService.getMySpend(myId)
-            if (isShow) viewBinding.tvTotal.text = (total - spended).toString()
+            val formatter = DecimalFormat("#,###,###")
+            val totalFormatted: String = formatter.format(total)
+            if (isShow) viewBinding.tvTotal.text = totalFormatted
             else viewBinding.tvTotal.text = "********"
             isShow = !isShow
         }

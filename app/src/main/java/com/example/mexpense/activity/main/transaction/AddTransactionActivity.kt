@@ -101,6 +101,11 @@ class AddTransactionActivity : BaseActivity() {
                     bill = ibill
                 }
                 databaseHelper.addTrans(transaction)
+
+                wallet?.initialBalance = wallet?.initialBalance ?: (0 - iamount.toLong())
+                databaseHelper.updateWallet(wallet)
+                user.total -= iamount.toLong()
+                databaseHelper.updateUser(user)
                 finish()
             }
         }
