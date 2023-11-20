@@ -567,7 +567,7 @@ public class SqlService extends SQLiteOpenHelper {
                 transaction.setStatus(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_STATUS))));
                 transaction.setReturnDate(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_RETURN_DATE)));
                 transaction.setUserId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_USER_ID))));
-                transaction.setUserId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_WALLET_ID))));
+                transaction.setWallet(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_WALLET_ID))));
                 // Adding wallet record to list
                 transactions.add(transaction);
             } while (cursor.moveToNext());
@@ -631,6 +631,7 @@ public class SqlService extends SQLiteOpenHelper {
     public void updateWallet(Wallet wallet) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_WALLET_ID, wallet.getId());
         values.put(COLUMN_WALLET_NAME, wallet.getName());
         values.put(COLUMN_WALLET_CURRENCY, wallet.getCurrency());
         values.put(COLUMN_WALLET_INITIAL_BALANCE, wallet.getInitialBalance());
@@ -717,6 +718,15 @@ public class SqlService extends SQLiteOpenHelper {
         List<Wallet> wallets = getAllWallet();
         List<Wallet> mine = wallets.stream().filter(w -> w.getUserId() == userID).collect(Collectors.toList());
         return mine;
+    }
+
+    public Long getMyTotalWallet(int userID) {
+        List<Wallet> myWalls = getMyWallets(userID);
+        Long total = 0L;
+        for (int i =0; i< myWalls.size(); i++) {
+            total += myWalls.get(i).getInitialBalance();
+        }
+        return total;
     }
 }
 

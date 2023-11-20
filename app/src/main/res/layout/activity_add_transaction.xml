@@ -67,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:background="@color/black_60"
                     android:layout_gravity="center_horizontal"
                     android:padding="24dp">
 
@@ -99,6 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
                         android:textSize="@dimen/sp_18"
+                        android:textColor="@color/white"
                         android:text="Select category"/>
 
                     <Spinner
@@ -106,6 +108,7 @@
                         android:id="@+id/spinner"
                         android:popupBackground="@color/black_60"
                         android:layout_width="match_parent"
+                        android:textColor="@color/white"
                         android:layout_height="wrap_content"/>
 
                     <LinearLayout
@@ -144,6 +147,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/tv_date"
+                            android:textColor="@color/white"
+
                             android:layout_gravity="center_vertical"
                             android:text="Date"
                             android:layout_marginStart="@dimen/dp_10"
@@ -235,6 +240,7 @@
                             android:id="@+id/tv_wallet"
                             android:layout_gravity="center_vertical"
                             android:text="Wallet"
+                            android:textColor="@color/white"
                             android:layout_marginStart="@dimen/dp_10"
                             android:textSize="@dimen/sp_18" />
                     </LinearLayout>
@@ -260,6 +266,8 @@
                             android:id="@+id/tv_bill"
                             android:layout_gravity="center_vertical"
                             android:text="Bill"
+                            android:textColor="@color/white"
+
                             android:layout_weight="1"
                             android:layout_marginStart="@dimen/dp_10"
                             android:textSize="@dimen/sp_18" />

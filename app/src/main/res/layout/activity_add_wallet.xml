@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-
+            android:background="@color/black_60"
             android:layout_gravity="center_horizontal"
             android:padding="24dp">
             <com.google.android.material.textfield.TextInputLayout
@@ -79,26 +79,20 @@
                     android:layout_marginTop="10dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutName"
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:endIconMode="clear_text">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:id="@+id/edt_currency"
-                    android:background="@drawable/custom_edittext"
-                    android:drawablePadding="8dp"
-                    android:hint="Currency"
-                    android:padding="8dp"
-                    android:textColor="@color/white_90"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="40dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="50dp"
+                android:id="@+id/edt_currency"
+                android:background="@drawable/custom_edittext"
+                android:drawablePadding="8dp"
+                android:text="VND"
+
+                android:padding="16dp"
+                android:textColor="@color/white_90"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:layout_marginTop="40dp" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutPassword"

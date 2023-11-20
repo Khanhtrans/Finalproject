@@ -16,6 +16,7 @@ import com.example.mexpense.exts.visible
 import com.example.mexpense.repository.transCategory
 import com.example.mexpense.services.SqlService
 import com.example.mexpense.ultilities.Constants
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.YearMonth
 import java.util.*
@@ -26,6 +27,8 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
     private lateinit var cateList: ArrayList<Category>
     val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     val formatMonth = SimpleDateFormat("MM/yyyy", Locale.getDefault())
+    val formatter = DecimalFormat("#,###,###")
+
 
     companion object {
         fun newInstance() = BudgetFragment()
@@ -44,20 +47,22 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
         sqlService = SqlService.getInstance(requireContext())
 
         val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
+        val user = sqlService.getUser(myId)
 
         val totalWallet = sqlService.totalMoney(myId)
-        viewBinding.tvTotalWallet.text = totalWallet.toString()
+        viewBinding.tvTotalWallet.text = formatter.format(totalWallet)
 
-        val totalSpend = sqlService.getMySpend(myId)
-        viewBinding.tvTotalSpend.text = totalSpend.toString()
+//        val totalSpend = sqlService.getMySpend(myId)
+//        viewBinding.tvTotalSpend.text = totalSpend.toString()
+//
+//        viewBinding.tvNumberDay.text = getDaysOfMonth(true)
+//        val calendar = Calendar.getInstance()
+//
+//        val monthString = formatMonth.format(calendar.time)
+//        viewBinding.tvTime.text = monthString
 
-        viewBinding.tvNumberDay.text = getDaysOfMonth(true)
-        val calendar = Calendar.getInstance()
 
-        val monthString = formatMonth.format(calendar.time)
-        viewBinding.tvTime.text = monthString
-
-        viewBinding.tvRemain.text = (totalWallet - totalSpend).toString()
+        viewBinding.tvRemain.text = formatter.format(user.total)
 
         val iconSearch =
             viewBinding.svCategory.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
@@ -76,7 +81,7 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
         iconSearch.setColorFilter(Color.BLACK)
         iconClose.setColorFilter(Color.BLACK)
 
-        cateList = getSpendingRecorded(transCategory)
+         cateList = getSpendListByMonth(true, transCategory)
         val adapter = BudgetAdapter(cateList, requireContext())
         viewBinding.rvTrans.apply {
             this.adapter = adapter
@@ -133,6 +138,9 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
         val transList = sqlService.getMyTransaction(myId)
         val afterCate = arrayListOf<Category>()
         afterCate.addAll(initCate)
+        for (cate in afterCate) {
+            cate.spend = 0
+        }
         for (trans in transList) {
             for (cate in afterCate) {
                 if (trans.category == cate.name) cate.spend += trans.amount
@@ -148,54 +156,54 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
         val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
         val transList = sqlService.getMyTransaction(myId)
         val afterCate = arrayListOf<Category>()
-        var totalSpend = 0L
+        var totalSpendCurrent = 0L
+        var totalSpendLast = 0L
 
+        val calendar = Calendar.getInstance()
+        val currentMonth = calendar.get(Calendar.MONTH) + 1
+        if (isThisMonth) {
+            val monthString = formatMonth.format(calendar.time)
+            viewBinding.tvTime.text = monthString
+        }
+        calendar.add(Calendar.MONTH, -1)
+        val lastMonth = calendar.get(Calendar.MONTH) + 1
+        if (!isThisMonth) {
+            val monthString = formatMonth.format(calendar.time)
+            viewBinding.tvTime.text = monthString
+        }
+
+        viewBinding.tvNumberDay.text = getDaysOfMonth(isThisMonth)
+        // reset spend list to 0
         afterCate.addAll(initCate)
         for (cate in afterCate) cate.spend = 0
 
         for (trans in transList) {
 
             val date = simpleDateFormat.parse(trans.date)
+            calendar.time = date
+            val monthOfTrans = calendar.get(Calendar.MONTH) + 1
 
             for (cate in afterCate) {
-                val calendar = Calendar.getInstance()
-                val currentMonth = calendar.get(Calendar.MONTH) + 1
-
-                if (isThisMonth && trans.category == cate.name && date != null) {
-                    totalSpend = 0L
-                    calendar.time = date
-                    val month = calendar.get(Calendar.MONTH) + 1
-                    if (month == currentMonth) {
-                        totalSpend += trans.amount
+                if (trans.category == cate.name && date != null) {
+                    if (isThisMonth && monthOfTrans == currentMonth) {
+                        totalSpendCurrent += trans.amount
                         cate.spend += trans.amount
                     }
-                    val monthString = formatMonth.format(date)
-                    viewBinding.tvTime.text = monthString
-                    viewBinding.tvNumberDay.text = getDaysOfMonth(true)
-                } else if (!isThisMonth && trans.category == cate.name && date != null) {
-                    totalSpend = 0L
-                    calendar.time = date
-                    calendar.add(Calendar.MONTH, -1)
-                    val m = calendar.get(Calendar.MONTH) + 1
-                    val month = calendar.get(Calendar.YEAR) * 100 + calendar.get(Calendar.MONTH) - 1
 
-                    if (month == currentMonth) {
+                    if (!isThisMonth && monthOfTrans == lastMonth) {
+                        totalSpendLast += trans.amount
                         cate.spend += trans.amount
-                        totalSpend += trans.amount
                     }
-
-                    val newDate = simpleDateFormat.parse(simpleDateFormat.format(calendar.time))
-                    val monthString = formatMonth.format(newDate)
-                    viewBinding.tvTime.text = monthString
-                    viewBinding.tvNumberDay.text = getDaysOfMonth(false)
                 }
+
             }
 
         }
-        viewBinding.tvTotalSpend.text = totalSpend.toString()
+        val total = if (isThisMonth) totalSpendCurrent else
+            totalSpendLast
+        viewBinding.tvTotalSpend.text = formatter.format(total)
 
-        viewBinding.tvTotalWallet.text = getTotalBudget(myId, isThisMonth).toString()
-        viewBinding.tvRemain.text = (getTotalBudget(myId, isThisMonth) - totalSpend).toString()
+       // viewBinding.tvTotalWallet.text = getTotalBudget(myId, isThisMonth).toString()
         return afterCate
     }
 
@@ -224,9 +232,11 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
                 currentCalendar.add(Calendar.MONTH, -1)
                 val lastMonth = currentCalendar.get(Calendar.MONTH) + 1
                 if (isThisMonth) {
-                    if (currentMont == monthAdd) total += w.initialBalance
+                    if (currentMont == monthAdd)
+                        total += w.initialBalance
                 } else {
-                    if (monthAdd == lastMonth) total += w.initialBalance
+                    if (monthAdd == lastMonth)
+                        total += w.initialBalance
                 }
             } else total += 0L
         }

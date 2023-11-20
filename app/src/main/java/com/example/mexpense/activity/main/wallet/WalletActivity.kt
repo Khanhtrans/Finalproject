@@ -49,9 +49,14 @@ class WalletActivity : BaseActivity() {
 
         val myId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
         val user = databaseHelper.getUser(myId)
+
         val formatter = DecimalFormat("#,###,###")
         val totalFormatted: String = formatter.format(user.total)
         binding.tvTotalBalance.text = totalFormatted
+
+        val totalWallet = databaseHelper.getMyTotalWallet(myId)
+        val remainTotal = formatter.format(user.total - totalWallet)
+        binding.tvAvaiBalance.text = remainTotal
 
         binding.btnTotal.setOnDelayClickListener {
             if (binding.zoneAddTotal.visibility == View.VISIBLE)
