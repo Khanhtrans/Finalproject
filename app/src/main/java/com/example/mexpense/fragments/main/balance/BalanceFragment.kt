@@ -30,7 +30,6 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
     private lateinit var sqlService: SqlService
     private var selectWallet : Int? = null
     private var mode = 0
-    private var transList = arrayListOf<Transaction>()
 
     private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     private val formatMonth = SimpleDateFormat("MM-yyyy", Locale.getDefault())
@@ -42,7 +41,8 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
     }
 
     private fun onClicked(transaction: Transaction) {
-
+        val alertDialog = ViewDialog()
+        alertDialog.showDialog(requireActivity(),transaction.bill)
     }
 
     companion object {
@@ -64,13 +64,12 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
         val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
         val trans = sqlService.getMyTransaction(myId)
         if (trans.size !=0) viewBinding.tvNoTrans.gone()
-        transList.addAll(trans)
-        transactionAdapter.setItems(transList)
+        transactionAdapter.setItems(trans)
         viewBinding.rvTrans.apply {
             adapter = transactionAdapter
         }
         viewBinding.btnWallet.setOnDelayClickListener {
-            withMultiChoiceList(transList)
+            withMultiChoiceList(trans)
         }
         val calendar = Calendar.getInstance()
         val monthString = formatMonth.format(calendar.time)
@@ -248,9 +247,9 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
             viewBinding.btnWallet.text = items[i]
             val filetered = trans.filter { trans ->   trans.wallet == myWallets[i].id}
             transactionAdapter.setItems(filetered)
-            transList.clear()
-            transList.addAll(filetered)
             selectWallet = myWallets[i].id
+            viewBinding.viewUnderThisMonth.gone()
+            viewBinding.viewUnderLastMonth.gone()
             dialogInterface.dismiss()
         }
         // Set the neutral/cancel button click listener

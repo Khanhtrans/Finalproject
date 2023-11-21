@@ -2,6 +2,7 @@ package com.example.mexpense.activity.main.transaction
 
 import android.Manifest
 import android.app.DatePickerDialog
+import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -80,7 +81,8 @@ class AddTransactionActivity : BaseActivity() {
                 showToast("please select Wallet")
                 return@setOnDelayClickListener
             }
-            val wallet = databaseHelper.getWalletFromID(selectWallet?:0)
+
+
 
             val user = databaseHelper.getUser(iuserId)
             val amountInLong = iamount.toLongOrNull()?:0
@@ -92,6 +94,14 @@ class AddTransactionActivity : BaseActivity() {
                 val warning = if (iamount.isEmpty()) "Input amount please!" else
                     if (idate.isEmpty()) "Select date please!" else "Input note please!"
                 showToast(warning)
+                return@setOnDelayClickListener
+            }
+
+            val wallet = databaseHelper.getWalletFromID(selectWallet?:0)
+            val walletMoney = wallet?.initialBalance?:0
+            val amountNumber = iamount.toLongOrNull()?:0
+            if (walletMoney - amountNumber < 0) {
+                showToast("please input amount smaller remain wallet")
                 return@setOnDelayClickListener
             }
 
@@ -127,6 +137,7 @@ class AddTransactionActivity : BaseActivity() {
                 databaseHelper.updateWallet(wallet)
                 user.total -= iamount.toLong()
                 databaseHelper.updateUser(user)
+
                 goMain()
             }
         }

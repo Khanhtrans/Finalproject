@@ -81,6 +81,7 @@
 
     </LinearLayout>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Available to add"
@@ -89,6 +90,7 @@
         android:layout_marginHorizontal="@dimen/dp_10"
         />
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_avai_balance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
