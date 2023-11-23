@@ -11,9 +11,8 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.google.android.material.slider.LabelFormatter
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,6 +20,7 @@ import java.util.*
 class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReportViewModel>() {
     lateinit var viewBinding: FragmentWeekReportBinding
     private lateinit var sqlService: SqlService
+    private var calendar = Calendar.getInstance()
 
     lateinit var barData: BarData
     lateinit var barDataSet: BarDataSet
@@ -29,6 +29,8 @@ class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReport
     var thisWeekTotal = 0L
     var lastWeekTotal = 0L
     val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    val format: DateFormat = SimpleDateFormat("M-dd", Locale.getDefault())
+
     companion object {
         fun newInstance() = WeekReportFragment()
     }
@@ -89,14 +91,19 @@ class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReport
         var maxTransName = ""
         val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
         val myTrans = sqlService.getMyTransaction(myId)
+        val currentW = getCurrentWeek()
+        val preWeek = getPreviousWeek()
+        val nextW = getNextWeek()
+
         for (trans in myTrans) {
             val date = simpleDateFormat.parse(trans.date)
-            val calendar = Calendar.getInstance()
-            val currentWeek = calendar.get(Calendar.WEEK_OF_MONTH)
+            val calendarTrans = Calendar.getInstance()
+            val currentWeek = calendarTrans.get(Calendar.WEEK_OF_MONTH)
             if (date != null) {
-                calendar.time = date
-                val addWeek = calendar.get(Calendar.WEEK_OF_MONTH)
-                if (addWeek == currentWeek) {
+                calendarTrans.time = date
+                val dateStr = format.format(date)
+
+                if (currentW?.any { wek -> wek == dateStr } == true) {
                     if (maxTrans < trans.amount) {
                         maxTrans = trans.amount
                         maxTransName = trans.name
@@ -104,14 +111,32 @@ class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReport
                     thisWeekTotal += trans.amount
                 }
 
-                val lastCal = Calendar.getInstance()
-                lastCal.add(Calendar.WEEK_OF_MONTH, -1)
-                val lastWeek = lastCal.get(Calendar.WEEK_OF_MONTH)
-                if (addWeek == lastWeek) {
+                if (preWeek?.any { wek -> wek == dateStr } == true) {
                     lastWeekTotal += trans.amount
                 }
             }
         }
         viewBinding.tvTopSpend.text = maxTransName
+    }
+
+    fun getCurrentWeek(): Array<String?>? {
+        calendar = Calendar.getInstance()
+        this.calendar.firstDayOfWeek = Calendar.SUNDAY
+        this.calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+        return getNextWeek()
+    }
+
+    fun getNextWeek(): Array<String?>? {
+        val days = arrayOfNulls<String>(7)
+        for (i in 0..6) {
+            days[i] = format.format(this.calendar.getTime())
+            this.calendar.add(Calendar.DATE, 1)
+        }
+        return days
+    }
+
+    fun getPreviousWeek(): Array<String?>? {
+        this.calendar.add(Calendar.DATE, -14)
+        return getNextWeek()
     }
 }

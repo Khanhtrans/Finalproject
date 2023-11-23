@@ -540,7 +540,7 @@ public class SqlService extends SQLiteOpenHelper {
         };
         // sorting orders
         String sortOrder =
-                COLUMN_TRANS_NAME + " ASC";
+                COLUMN_TRANS_DATE + " ASC";
         List<Transaction> transactions = new ArrayList<Transaction>();
         SQLiteDatabase db = this.getReadableDatabase();
         // query the wallet table

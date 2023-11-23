@@ -30,6 +30,9 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
     private lateinit var sqlService: SqlService
     private var selectWallet : Int? = null
     private var mode = 0
+    private var isThisSelected = false
+    private var isLastSelected = false
+    private var isFilterSelect = false
 
     private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     private val formatMonth = SimpleDateFormat("MM-yyyy", Locale.getDefault())
@@ -102,6 +105,7 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
                 viewBinding.tvMonth.gone()
             }
         }
+
         val cal = Calendar.getInstance()
         val startDateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
@@ -166,6 +170,7 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
         val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
         val transList = sqlService.getMyTransaction(myId)
         val afterList = arrayListOf<Transaction>()
+
         val calendar = Calendar.getInstance()
         val currentMonthString = formatMonth.format(calendar.time)
         val currentMonth = calendar.get(Calendar.MONTH) + 1
