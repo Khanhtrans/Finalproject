@@ -105,8 +105,8 @@ class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReport
                 }
 
                 val lastCal = Calendar.getInstance()
-                lastCal.add(Calendar.MONTH, -1)
-                val lastWeek = lastCal.get(Calendar.MONTH) + 1
+                lastCal.add(Calendar.WEEK_OF_MONTH, -1)
+                val lastWeek = lastCal.get(Calendar.WEEK_OF_MONTH)
                 if (addWeek == lastWeek) {
                     lastWeekTotal += trans.amount
                 }

@@ -1,8 +1,10 @@
 package com.example.mexpense.services;
 
 
-import static com.example.mexpense.ultilities.Constants.COLUMN_CATEGORY_ID;
-import static com.example.mexpense.ultilities.Constants.COLUMN_CATEGORY_NAME;
+import static com.example.mexpense.ultilities.Constants.COLUMN_NOTIFY_CONTENT;
+import static com.example.mexpense.ultilities.Constants.COLUMN_NOTIFY_DATE;
+import static com.example.mexpense.ultilities.Constants.COLUMN_NOTIFY_ID;
+import static com.example.mexpense.ultilities.Constants.COLUMN_NOTIFY_USER_ID;
 import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_AMOUNT;
 import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_BILL;
 import static com.example.mexpense.ultilities.Constants.COLUMN_TRANS_CATEGORY;
@@ -40,6 +42,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.mexpense.entity.Notification;
 import com.example.mexpense.entity.Transaction;
 import com.example.mexpense.entity.User;
 import com.example.mexpense.entity.Wallet;
@@ -47,10 +50,8 @@ import com.example.mexpense.ultilities.Constants;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -64,7 +65,7 @@ public class SqlService extends SQLiteOpenHelper {
     public static final String TABLE_USER = "user_table";
     public static final String TABLE_WALLET = "wallet_table";
     public static final String TABLE_TRANSACION = "transaction_table";
-    public static final String TABLE_CATEGORY = "category_table";
+    public static final String TABLE_NOTIFICATION = "notify_table";
 
     private SQLiteDatabase database;
 
@@ -156,10 +157,14 @@ public class SqlService extends SQLiteOpenHelper {
     // drop table sql query
     private static final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
 
-    private static final String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "("
-            + COLUMN_CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_CATEGORY_NAME + " TEXT" + ")";
+    private static final String CREATE_NOTIFY_TABLE = "CREATE TABLE " + TABLE_NOTIFICATION + "("
+            + COLUMN_NOTIFY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_NOTIFY_CONTENT + " TEXT,"
+            + COLUMN_NOTIFY_DATE + " TEXT,"
+            + COLUMN_NOTIFY_USER_ID + " INTEGER"
+            + ")";
     // drop table sql query
-    private static final String DROP_CATEGORY_TABLE = "DROP TABLE IF EXISTS " + TABLE_CATEGORY;
+    private static final String DROP_NOTIFY_TABLE = "DROP TABLE IF EXISTS " + TABLE_NOTIFICATION;
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -168,7 +173,7 @@ public class SqlService extends SQLiteOpenHelper {
         database.execSQL(EXPENSE_DATABASE_CREATE);
         database.execSQL(CREATE_USER_TABLE);
         database.execSQL(CREATE_WALLET_TABLE);
-        database.execSQL(CREATE_CATEGORY_TABLE);
+        database.execSQL(CREATE_NOTIFY_TABLE);
         database.execSQL(CREATE_TRANSACTION_TABLE);
     }
 
@@ -179,7 +184,7 @@ public class SqlService extends SQLiteOpenHelper {
             database.execSQL("DROP TABLE IF EXISTS " + TRIPS_TABLE_NAME);
             database.execSQL(DROP_USER_TABLE);
             database.execSQL(DROP_WALLET_TABLE);
-            database.execSQL(DROP_CATEGORY_TABLE);
+            database.execSQL(DROP_NOTIFY_TABLE);
             database.execSQL(DROP_TRANS_TABLE);
         }
         catch (Exception e){
@@ -213,6 +218,74 @@ public class SqlService extends SQLiteOpenHelper {
             payload.add(g.toJson(new CloudData(c)));
         }
         return payload;
+    }
+
+    //add notify record
+    public void addNotify(Notification notify) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTIFY_CONTENT, notify.getContent());
+        values.put(COLUMN_NOTIFY_DATE, notify.getDate());
+        values.put(COLUMN_NOTIFY_USER_ID,notify.getUser_id());
+        // Inserting Row
+        db.insert(TABLE_NOTIFICATION, null, values);
+        db.close();
+    }
+
+    /**
+     * This method is to fetch all notifications and return the list of notification records
+     *
+     * @return list
+     */
+    @SuppressLint("Range")
+    public List<Notification> getAllNotifications() {
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_NOTIFY_ID,
+                COLUMN_NOTIFY_CONTENT,
+                COLUMN_NOTIFY_DATE,
+                COLUMN_NOTIFY_USER_ID
+        };
+        // sorting orders
+        String sortOrder =
+                COLUMN_NOTIFY_DATE + " ASC";
+        List<Notification> notifyList = new ArrayList<Notification>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // query the user table
+
+        Cursor cursor = db.query(TABLE_NOTIFICATION, //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Notification notification = new Notification();
+                notification.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_NOTIFY_ID))));
+                notification.setContent(cursor.getString(cursor.getColumnIndex(COLUMN_NOTIFY_CONTENT)));
+                notification.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_NOTIFY_DATE)));
+                notification.setUser_id(cursor.getInt(cursor.getColumnIndex(COLUMN_NOTIFY_USER_ID)));
+                // Adding user record to list
+                notifyList.add(notification);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return notifyList;
+    }
+
+    public List<Notification> getMyNotify(int userID) {
+        List<Notification> transactions = getAllNotifications();
+        List<Notification> mine = new ArrayList<>();
+        try {
+            mine = transactions.stream().filter(w -> w.getUser_id() == userID).collect(Collectors.toList());
+        } catch ( Exception e) {
+            Log.e("Exception","No transaction found");
+        }
+        return mine;
     }
 
     /**
@@ -259,6 +332,7 @@ public class SqlService extends SQLiteOpenHelper {
      *
      * @return list
      */
+    @SuppressLint("Range")
     public List<User> getAllUser() {
         // array of columns to fetch
         String[] columns = {
@@ -493,7 +567,7 @@ public class SqlService extends SQLiteOpenHelper {
                 transaction.setStatus(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_STATUS))));
                 transaction.setReturnDate(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_RETURN_DATE)));
                 transaction.setUserId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_USER_ID))));
-                transaction.setUserId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_WALLET_ID))));
+                transaction.setWallet(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_TRANS_WALLET_ID))));
                 // Adding wallet record to list
                 transactions.add(transaction);
             } while (cursor.moveToNext());
@@ -554,6 +628,23 @@ public class SqlService extends SQLiteOpenHelper {
         return total;
     }
 
+    public void updateWallet(Wallet wallet) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_WALLET_ID, wallet.getId());
+        values.put(COLUMN_WALLET_NAME, wallet.getName());
+        values.put(COLUMN_WALLET_CURRENCY, wallet.getCurrency());
+        values.put(COLUMN_WALLET_INITIAL_BALANCE, wallet.getInitialBalance());
+        values.put(COLUMN_WALLET_CATEGORY, wallet.getCategory());
+        values.put(COLUMN_WALLET_DAY_ADD, wallet.getDayAdd());
+        values.put(COLUMN_WALLET_USER_ID, wallet.getUserId());
+        // updating row
+        db.update(TABLE_WALLET, values, COLUMN_WALLET_ID + " = ?",
+                new String[]{String.valueOf(wallet.getId())});
+        db.close();
+    }
+
+
     /**
      * This method is to create wallet record
      *
@@ -577,6 +668,7 @@ public class SqlService extends SQLiteOpenHelper {
      *
      * @return list
      */
+    @SuppressLint("Range")
     public List<Wallet> getAllWallet() {
         // array of columns to fetch
         String[] columns = {
@@ -626,6 +718,15 @@ public class SqlService extends SQLiteOpenHelper {
         List<Wallet> wallets = getAllWallet();
         List<Wallet> mine = wallets.stream().filter(w -> w.getUserId() == userID).collect(Collectors.toList());
         return mine;
+    }
+
+    public Long getMyTotalWallet(int userID) {
+        List<Wallet> myWalls = getMyWallets(userID);
+        Long total = 0L;
+        for (int i =0; i< myWalls.size(); i++) {
+            total += myWalls.get(i).getInitialBalance();
+        }
+        return total;
     }
 }
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.example.mexpense.R
 import com.example.mexpense.activity.main.wallet.WalletActivity
 import com.example.mexpense.base.BaseActivity
@@ -15,6 +16,7 @@ import com.example.mexpense.base.BaseMVVMFragment
 import com.example.mexpense.base.SharePreUtil
 import com.example.mexpense.databinding.FragmentBalanceBinding
 import com.example.mexpense.entity.Transaction
+import com.example.mexpense.entity.Wallet
 import com.example.mexpense.exts.gone
 import com.example.mexpense.exts.setOnDelayClickListener
 import com.example.mexpense.exts.visible
@@ -26,6 +28,8 @@ import java.util.*
 class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel>() {
     private lateinit var viewBinding: FragmentBalanceBinding
     private lateinit var sqlService: SqlService
+    private var selectWallet : Int? = null
+    private var mode = 0
 
     private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     private val formatMonth = SimpleDateFormat("MM-yyyy", Locale.getDefault())
@@ -37,7 +41,8 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
     }
 
     private fun onClicked(transaction: Transaction) {
-
+        val alertDialog = ViewDialog()
+        alertDialog.showDialog(requireActivity(),transaction.bill)
     }
 
     companion object {
@@ -64,8 +69,7 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
             adapter = transactionAdapter
         }
         viewBinding.btnWallet.setOnDelayClickListener {
-            val intent = Intent(activity,WalletActivity::class.java)
-            activity?.startActivity(intent)
+            withMultiChoiceList(trans)
         }
         val calendar = Calendar.getInstance()
         val monthString = formatMonth.format(calendar.time)
@@ -172,14 +176,23 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
         for (trans in transList) {
             val date = simpleDateFormat.parse(trans.date)
             val calendarAdd = Calendar.getInstance()
+            calendarAdd.time = date
             val addMonth = calendarAdd.get(Calendar.MONTH) + 1
-            if (isThisMonth && currentMonth == addMonth) afterList.add(trans)
-            else if (!isThisMonth && addMonth == lastMonth) afterList.add(trans)
+            if (selectWallet != null && trans.wallet == selectWallet) {
+                if (isThisMonth && currentMonth == addMonth ) afterList.add(trans)
+                else if (!isThisMonth && addMonth == lastMonth) afterList.add(trans)
+            } else {
+                if (isThisMonth && currentMonth == addMonth) afterList.add(trans)
+                else if (!isThisMonth && addMonth == lastMonth) afterList.add(trans)
+            }
+
         }
 
         viewBinding.tvMonth.text = if (isThisMonth) currentMonthString else lastMonthString
 
-        transactionAdapter.setItems(afterList)
+        transList.clear()
+        transList.addAll(afterList)
+        transactionAdapter.setItems(transList)
     }
 
     private fun updateTransListByFilter() {
@@ -205,10 +218,48 @@ class BalanceFragment : BaseMVVMFragment<FragmentBalanceBinding,BalanceViewModel
 
         for (trans in transList) {
             val date = simpleDateFormat.parse(trans.date)
-            if (date!= null && date <= endDate && date >= startDate) afterList.add(trans)
+            if (selectWallet != null) {
+                if (date!= null && date <= endDate && date >= startDate && trans.wallet == selectWallet)
+                    afterList.add(trans)
+            } else {
+                if (date!= null && date <= endDate && date >= startDate)
+                    afterList.add(trans)
+            }
+
+        }
+        transList.clear()
+        transList.addAll(afterList)
+        transactionAdapter.setItems(transList)
+    }
+
+    private fun withMultiChoiceList(trans: List<Transaction>) {
+        val userId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
+        val myWallets = sqlService.getMyWallets(userId)
+        val items = Array(myWallets.size){""}
+        for (i in myWallets.indices) {
+            items[i] = myWallets[i].name?:""
         }
 
-        transactionAdapter.setItems(afterList)
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setTitle("This is list choice dialog box")
+        builder.setSingleChoiceItems(items, -1) { dialogInterface, i ->
+            viewBinding.btnWallet.text = items[i]
+            val filetered = trans.filter { trans ->   trans.wallet == myWallets[i].id}
+            transactionAdapter.setItems(filetered)
+            selectWallet = myWallets[i].id
+            viewBinding.viewUnderThisMonth.gone()
+            viewBinding.viewUnderLastMonth.gone()
+            dialogInterface.dismiss()
+        }
+        // Set the neutral/cancel button click listener
+        builder.setNeutralButton("Cancel") { dialog, which ->
+            // Do something when click the neutral button
+            dialog.cancel()
+        }
+
+        builder.show()
+
     }
 
 }

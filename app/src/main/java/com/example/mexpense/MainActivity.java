@@ -66,13 +66,11 @@ public class MainActivity extends BaseActivity {
             return true;
         });
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddTransactionActivity.class);
-                startActivity(intent);
-                //replaceFragment(new ExpenseFormFragment());
-            }
+        binding.fab.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddTransactionActivity.class);
+            startActivity(intent);
+            finish();
+            //replaceFragment(new ExpenseFormFragment());
         });
         initiateActionBar();
     }

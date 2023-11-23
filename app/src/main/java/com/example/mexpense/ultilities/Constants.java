@@ -45,8 +45,10 @@ public class Constants {
     public static final String COLUMN_USER_PASSWORD = "user_password";
     public static final String COLUMN_USER_TOTAL = "user_total";
 
-    public static final String COLUMN_CATEGORY_ID = "category_id";
-    public static final String COLUMN_CATEGORY_NAME = "category_name";
+    public static final String COLUMN_NOTIFY_ID = "notify_id";
+    public static final String COLUMN_NOTIFY_CONTENT = "notify_content";
+    public static final String COLUMN_NOTIFY_DATE = "notify_date";
+    public static final String COLUMN_NOTIFY_USER_ID = "notify_user_id";
 
     //wallet
     public static final String COLUMN_WALLET_ID = "wallet_id";

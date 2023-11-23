@@ -20,5 +20,6 @@ class TransactionAdapter(
         binding.tvAmount.text = amount
         binding.tvNote.text = item.note
         binding.tvDate.text = item.date
+        binding.container.setOnClickListener { onClicked(item) }
     }
 }

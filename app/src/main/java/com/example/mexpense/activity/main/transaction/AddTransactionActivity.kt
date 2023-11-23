@@ -2,8 +2,10 @@ package com.example.mexpense.activity.main.transaction
 
 import android.Manifest
 import android.app.DatePickerDialog
+import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -12,11 +14,14 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.example.mexpense.MainActivity
 import com.example.mexpense.R
 import com.example.mexpense.base.BaseActivity
 import com.example.mexpense.base.SharePreUtil
@@ -25,6 +30,7 @@ import com.example.mexpense.entity.Transaction
 import com.example.mexpense.exts.gone
 import com.example.mexpense.exts.setOnDelayClickListener
 import com.example.mexpense.exts.visible
+import com.example.mexpense.fragments.main.login.InputValidation
 import com.example.mexpense.services.SqlService
 import com.example.mexpense.ultilities.Constants
 import java.io.File
@@ -36,6 +42,8 @@ import java.util.*
 class AddTransactionActivity : BaseActivity() {
     private lateinit var binding: ActivityAddTransactionBinding
     private lateinit var databaseHelper: SqlService
+    private lateinit var inputValidation: InputValidation
+
     var selectCate = ""
     private var selectWallet: Int? = null
 
@@ -46,7 +54,11 @@ class AddTransactionActivity : BaseActivity() {
         binding = ActivityAddTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         databaseHelper = SqlService.getInstance(this)
-        binding.tvClose.setOnClickListener { finish() }
+        inputValidation = InputValidation(this);
+
+        binding.tvClose.setOnClickListener {
+            goMain()
+        }
 
         binding.btnWallet.setOnDelayClickListener {
             withMultiChoiceList()
@@ -63,18 +75,36 @@ class AddTransactionActivity : BaseActivity() {
             val itransportation = binding.edtTransportation.text.toString().trim()
             val ibill = currentPhotoPath
             val istatus = true
-            val iwallet = 1
             val iuserId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
             val transaction = Transaction()
             if (selectWallet == null) {
                 showToast("please select Wallet")
                 return@setOnDelayClickListener
             }
-            val wallet = databaseHelper.getWalletFromID(selectWallet?:0)
 
-            val spendedTrans = databaseHelper.getMySpend(iuserId)
+
+
             val user = databaseHelper.getUser(iuserId)
             val amountInLong = iamount.toLongOrNull()?:0
+
+            if (iamount.isEmpty() || idate.isEmpty() || inote.isEmpty()) {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                val view = this.currentFocus
+                imm.hideSoftInputFromWindow(view?.windowToken, 0)
+                val warning = if (iamount.isEmpty()) "Input amount please!" else
+                    if (idate.isEmpty()) "Select date please!" else "Input note please!"
+                showToast(warning)
+                return@setOnDelayClickListener
+            }
+
+            val wallet = databaseHelper.getWalletFromID(selectWallet?:0)
+            val walletMoney = wallet?.initialBalance?:0
+            val amountNumber = iamount.toLongOrNull()?:0
+            if (walletMoney - amountNumber < 0) {
+                showToast("please input amount smaller remain wallet")
+                return@setOnDelayClickListener
+            }
+
             if (!databaseHelper.checkNewTransAvaiToAdd(selectWallet?:0, iuserId, amountInLong)) {
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 val view = this.currentFocus
@@ -101,7 +131,14 @@ class AddTransactionActivity : BaseActivity() {
                     bill = ibill
                 }
                 databaseHelper.addTrans(transaction)
-                finish()
+                val walletMoney = wallet?.initialBalance?:0
+                val newWalletMoney = walletMoney - iamount.toLong()
+                wallet?.initialBalance = newWalletMoney
+                databaseHelper.updateWallet(wallet)
+                user.total -= iamount.toLong()
+                databaseHelper.updateUser(user)
+
+                goMain()
             }
         }
 
@@ -116,6 +153,7 @@ class AddTransactionActivity : BaseActivity() {
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>,
                                         view: View, position: Int, id: Long) {
+                (parent.getChildAt(0) as TextView).setTextColor(Color.WHITE)
                 selectCate = categories[position]
                 if (selectCate == categories[8]) binding.detailZone.visible() else binding.detailZone.gone()
             }
@@ -123,6 +161,7 @@ class AddTransactionActivity : BaseActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // write code to perform some action
                 selectCate = categories[0]
+                (parent.getChildAt(0) as TextView).setTextColor(Color.WHITE)
             }
         }
 
@@ -208,6 +247,22 @@ class AddTransactionActivity : BaseActivity() {
             }
         }
 
+        val callback = object : OnBackPressedCallback(
+            true // default to enabled
+        ) {
+            override fun handleOnBackPressed() {
+                goMain()
+            }
+        }
+        onBackPressedDispatcher.addCallback(
+            this, // LifecycleOwner
+            callback
+        )
+    }
+
+    fun goMain() {
+        startActivity(Intent(this@AddTransactionActivity, MainActivity::class.java))
+        finish()
     }
 
     private fun withMultiChoiceList() {
@@ -293,6 +348,4 @@ class AddTransactionActivity : BaseActivity() {
             sendBroadcast(mediaScanIntent)
         }
     }
-
-
 }
