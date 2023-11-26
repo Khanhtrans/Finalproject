@@ -20,15 +20,10 @@ import java.util.*
 
 class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReportViewModel>() {
     lateinit var viewBinding: FragmentWeekReportBinding
-    private lateinit var sqlService: SqlService
 
     lateinit var barData: BarData
     lateinit var barDataSet: BarDataSet
     lateinit var barEntriesList: ArrayList<BarEntry>
-
-    var thisWeekTotal = 0L
-    var lastWeekTotal = 0L
-    val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     companion object {
         fun newInstance() = WeekReportFragment()
     }
@@ -43,7 +38,8 @@ class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReport
 
     override fun initialize() {
         viewBinding = getViewBinding()
-        sqlService = SqlService.getInstance(requireContext())
+        val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID)
+        getViewModel().setUp(requireContext(), myId)
         getData()
         getBarChartData()
 
@@ -78,40 +74,14 @@ class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReport
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         // Below line will add labels on your xAxis:
         xAxis.valueFormatter = IndexAxisValueFormatter(xVals)
-        barEntriesList.add(BarEntry(0.5f, lastWeekTotal.toFloat()))
-        barEntriesList.add(BarEntry(1.5f, thisWeekTotal.toFloat()))
+        barEntriesList.add(BarEntry(0.5f, getViewModel().lastWeekTotal.toFloat()))
+        barEntriesList.add(BarEntry(1.5f, getViewModel().thisWeekTotal.toFloat()))
     }
 
     private fun getData() {
-        thisWeekTotal = 0
-        lastWeekTotal = 0
-        var maxTrans = 0L
-        var maxTransName = ""
-        val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
-        val myTrans = sqlService.getMyTransaction(myId)
-        for (trans in myTrans) {
-            val date = simpleDateFormat.parse(trans.date)
-            val calendar = Calendar.getInstance()
-            val currentWeek = calendar.get(Calendar.WEEK_OF_MONTH)
-            if (date != null) {
-                calendar.time = date
-                val addWeek = calendar.get(Calendar.WEEK_OF_MONTH)
-                if (addWeek == currentWeek) {
-                    if (maxTrans < trans.amount) {
-                        maxTrans = trans.amount
-                        maxTransName = trans.name
-                    }
-                    thisWeekTotal += trans.amount
-                }
-
-                val lastCal = Calendar.getInstance()
-                lastCal.add(Calendar.WEEK_OF_MONTH, -1)
-                val lastWeek = lastCal.get(Calendar.WEEK_OF_MONTH)
-                if (addWeek == lastWeek) {
-                    lastWeekTotal += trans.amount
-                }
-            }
+        getViewModel().getData() {
+            viewBinding.tvTopSpend.text = it
         }
-        viewBinding.tvTopSpend.text = maxTransName
+
     }
 }

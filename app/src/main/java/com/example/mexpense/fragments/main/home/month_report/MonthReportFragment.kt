@@ -5,33 +5,23 @@ import com.example.mexpense.R
 import com.example.mexpense.base.BaseMVVMFragment
 import com.example.mexpense.base.SharePreUtil
 import com.example.mexpense.databinding.FragmentMonthReportBinding
-import com.example.mexpense.services.SqlService
 import com.example.mexpense.ultilities.Constants
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthReportViewModel>() {
     private lateinit var viewBinding: FragmentMonthReportBinding
-    private lateinit var sqlService: SqlService
 
-    lateinit var barData: BarData
+    private lateinit var barData: BarData
 
-    lateinit var barDataSet: BarDataSet
+    private lateinit var barDataSet: BarDataSet
 
-    lateinit var barEntriesList: ArrayList<BarEntry>
-
-    var thisMonthTotal = 0L
-    var lastMonthTotal = 0L
-
-    val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-    val formatMonth = SimpleDateFormat("MM/yyyy", Locale.getDefault())
+    private lateinit var barEntriesList: ArrayList<BarEntry>
 
     companion object {
         fun newInstance() = MonthReportFragment()
@@ -47,8 +37,9 @@ class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthRep
 
     override fun initialize() {
         viewBinding = getViewBinding()
-        sqlService = SqlService.getInstance(requireContext())
+        val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
 
+        getViewModel().setUp(requireContext(),myId)
         getData()
         getBarChartData()
 
@@ -96,42 +87,14 @@ class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthRep
         xAxis.valueFormatter = IndexAxisValueFormatter(xVals)
         // on below line we are adding data
         // to our bar entries list
-        barEntriesList.add(BarEntry(0.5f, lastMonthTotal.toFloat(),"Last month"))
-        barEntriesList.add(BarEntry(1.5f, thisMonthTotal.toFloat(),"This month"))
+        barEntriesList.add(BarEntry(0.5f, getViewModel().lastMonthTotal.toFloat(),"Last month"))
+        barEntriesList.add(BarEntry(1.5f, getViewModel().thisMonthTotal.toFloat(),"This month"))
 
     }
 
     private fun getData() {
-        thisMonthTotal = 0
-        lastMonthTotal = 0
-        var maxTrans = 0L
-        var maxTransName = ""
-        val myId = SharePreUtil.GetShareInt(requireContext(), Constants.KEY_USER_ID);
-        val myTrans = sqlService.getMyTransaction(myId)
-        for (trans in myTrans) {
-            val date = simpleDateFormat.parse(trans.date)
-            val calendar = Calendar.getInstance()
-            val currentMonth = calendar.get(Calendar.MONTH) + 1
-            if (date != null) {
-                calendar.time = date
-                val addMonth = calendar.get(Calendar.MONTH) + 1
-                if (addMonth == currentMonth) {
-                    if (maxTrans < trans.amount) {
-                        maxTrans = trans.amount
-                        maxTransName = trans.name
-                    }
-                    thisMonthTotal += trans.amount
-                }
-                val lastCal = Calendar.getInstance()
-                lastCal.add(Calendar.MONTH, -1)
-                val lastMonth = lastCal.get(Calendar.MONTH) + 1
-                if (addMonth == lastMonth) {
-                    lastMonthTotal += trans.amount
-                }
-            }
+        getViewModel().getData {  viewBinding.tvTopSpend.text = it }
 
-        }
-        viewBinding.tvTopSpend.text = maxTransName
     }
 
 }
