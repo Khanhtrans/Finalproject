@@ -64,6 +64,8 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
 
         viewBinding.tvRemain.text = formatter.format(user.total)
 
+
+        //set up search view
         val iconSearch =
             viewBinding.svCategory.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
         val iconClose =
@@ -81,7 +83,7 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
         iconSearch.setColorFilter(Color.BLACK)
         iconClose.setColorFilter(Color.BLACK)
 
-         cateList = getSpendListByMonth(true, transCategory)
+         cateList = getSpendListByMonth(true, transCategory) // lấy danh sách category và gán giá trị
         val adapter = BudgetAdapter(cateList, requireContext())
         viewBinding.rvTrans.apply {
             this.adapter = adapter
@@ -160,30 +162,39 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
         var totalSpendLast = 0L
 
         val calendar = Calendar.getInstance()
-        val currentMonth = calendar.get(Calendar.MONTH) + 1
+        val currentMonth = calendar.get(Calendar.MONTH) + 1 // lấy ra tháng này là bnh
         if (isThisMonth) {
             val monthString = formatMonth.format(calendar.time)
             viewBinding.tvTime.text = monthString
         }
         calendar.add(Calendar.MONTH, -1)
-        val lastMonth = calendar.get(Calendar.MONTH) + 1
+        val lastMonth = calendar.get(Calendar.MONTH) + 1 // lấy ra tháng trước là bnh
         if (!isThisMonth) {
             val monthString = formatMonth.format(calendar.time)
             viewBinding.tvTime.text = monthString
         }
 
-        viewBinding.tvNumberDay.text = getDaysOfMonth(isThisMonth)
+        viewBinding.tvNumberDay.text = getDaysOfMonth(isThisMonth) // lấy ra số ngày của tháng đấy
         // reset spend list to 0
         afterCate.addAll(initCate)
-        for (cate in afterCate) cate.spend = 0
 
+
+        // chạy 2 vòng for lồng nhau
+        // chạy danh sách category
+        //
+        for (cate in afterCate) cate.spend = 0 // reset spend = 0 hết
+
+
+
+// chạy danh sách transaction lấy ra tổng spend của thể loại i
         for (trans in transList) {
 
             val date = simpleDateFormat.parse(trans.date)
             calendar.time = date
-            val monthOfTrans = calendar.get(Calendar.MONTH) + 1
+            val monthOfTrans = calendar.get(Calendar.MONTH) + 1 // lấy ra tháng add trans
 
             for (cate in afterCate) {
+                // check xem trùng tên category ko và trùng tháng ko
                 if (trans.category == cate.name && date != null) {
                     if (isThisMonth && monthOfTrans == currentMonth) {
                         totalSpendCurrent += trans.amount
@@ -201,7 +212,7 @@ class BudgetFragment : BaseMVVMFragment<FragmentBudgetBinding, BudgetViewModel>(
         }
         val total = if (isThisMonth) totalSpendCurrent else
             totalSpendLast
-        viewBinding.tvTotalSpend.text = formatter.format(total)
+        viewBinding.tvTotalSpend.text = formatter.format(total) // hiển thị tổng spend theo tháng, format value về định dạng 1000,000
 
        // viewBinding.tvTotalWallet.text = getTotalBudget(myId, isThisMonth).toString()
         return afterCate

@@ -65,15 +65,18 @@ class AddWalletActivity : AppCompatActivity() {
             val name = binding.edtName.text.toString().trim()
             val initial = binding.edtInitialBalance.text.toString().trim().toLongOrNull()?:0
             val currency = binding.edtCurrency.text.toString().trim()
+
             if (initial <=0) {
                 Toast.makeText(this,"Please input initial balance!",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             if (name.isNotEmpty() && initial>0 && currency.isNotEmpty()) {
                 val userId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
 
                 val totalWallet = databaseHelper.totalMoney(userId)
                 val user = databaseHelper.getUser(userId)
+
                 if (totalWallet + initial > user.total) {
                     val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                     val view = this.currentFocus

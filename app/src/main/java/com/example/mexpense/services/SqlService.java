@@ -416,7 +416,11 @@ public class SqlService extends SQLiteOpenHelper {
     public boolean checkUser(String email) {
         // array of columns to fetch
         String[] columns = {
-                COLUMN_USER_ID
+                COLUMN_USER_ID,
+                COLUMN_USER_NAME,
+                COLUMN_USER_EMAIL,
+                COLUMN_USER_PASSWORD,
+                COLUMN_USER_TOTAL
         };
         SQLiteDatabase db = this.getReadableDatabase();
         // selection criteria

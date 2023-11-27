@@ -25,8 +25,8 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     Context context;
 
-    public final int TYPE_DATE = 0;
-    public final int TYPE_CONTENT = 1;
+    public final int TYPE_DATE = 0; // category chính
+    public final int TYPE_CONTENT = 1; // các category con
 
     public BudgetAdapter (ArrayList<Category> arrayList, Context context) {
         this.arrayListFiltered = arrayList;
@@ -74,15 +74,17 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
-
+//  hiển thị lên view như thế nào
         if (viewHolder instanceof contentViewHolder) {
-
+            // sửa hiển thị cho view category con
             ((contentViewHolder) viewHolder).tvName.setText(arrayListFiltered.get(position).getName());
             Long spend = arrayListFiltered.get(position).getSpend();
             ((contentViewHolder) viewHolder).tvSpend.setText(String.format("%,d",spend));
         }
 
         if (viewHolder instanceof dateViewHolder) {
+
+            // sửa hiện thị cho category cha
             String typeCate = arrayListFiltered.get(position).getType();
             ((dateViewHolder) viewHolder).type.setText(typeCate);
         }

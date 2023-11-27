@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+// lưu trữ data theo key từ đầu đến cuối
 public class SharePreUtil {
 
     /**

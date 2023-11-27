@@ -34,6 +34,7 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
         getViewModel().setUp(requireContext())
         viewBinding = getViewBinding()
 
+        // set viewpager hiển thị month report và weekreport
         viewBinding.viewpager.adapter = object : FragmentStateAdapter(this) {
 
             override fun createFragment(position: Int): Fragment {
@@ -82,6 +83,7 @@ class HomeFragment : BaseMVVMFragment<FragmentHomeBinding,HomeViewModel>() {
 }
 
 interface ResourceStore {
+    // set up danh sách fragment trong viewpager
     companion object {
         val tabList = listOf(
             R.string.tab1, R.string.tab2

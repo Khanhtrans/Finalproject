@@ -31,12 +31,22 @@ class MonthReportViewModel : BaseViewModel() {
         var maxTransName = ""
         val myTrans = sqlService.getMyTransaction(userId!!)
         for (trans in myTrans) {
+            // lấy trường date trong transaction
+            // vì nó đang dạng string, phải convert sang dạng Date
             val date = simpleDateFormat.parse(trans.date)
+
             val calendar = Calendar.getInstance()
+
+            // lấy ra tháng hiện tại là bao nhiêu
             val currentMonth = calendar.get(Calendar.MONTH) + 1
             if (date != null) {
                 calendar.time = date
+
+
+                // lấy ra tháng của transaction
                 val addMonth = calendar.get(Calendar.MONTH) + 1
+
+
                 if (addMonth == currentMonth) {
                     if (maxTrans < trans.amount) {
                         maxTrans = trans.amount
@@ -44,9 +54,13 @@ class MonthReportViewModel : BaseViewModel() {
                     }
                     thisMonthTotal += trans.amount
                 }
+
+                // lấy ra last month là bao nhiêu
                 val lastCal = Calendar.getInstance()
                 lastCal.add(Calendar.MONTH, -1)
                 val lastMonth = lastCal.get(Calendar.MONTH) + 1
+
+
                 if (addMonth == lastMonth) {
                     lastMonthTotal += trans.amount
                 }

@@ -84,6 +84,8 @@ class WalletActivity : BaseActivity() {
                 notify.content = binding.edtPlusTotal.text.trim().toString()
                 notify.date =  date
                 notify.user_id = user.id
+
+                // thêm vào database
                 databaseHelper.addNotify(notify)
             }
 

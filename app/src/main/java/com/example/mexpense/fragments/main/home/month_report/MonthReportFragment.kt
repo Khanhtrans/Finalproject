@@ -43,6 +43,8 @@ class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthRep
         getData()
         getBarChartData()
 
+
+        // sử dụng thư viện bên thứ 3 MPchart
         barDataSet = BarDataSet(barEntriesList, "Month Report")
 
         barData = BarData(barDataSet)
@@ -51,6 +53,7 @@ class MonthReportFragment : BaseMVVMFragment<FragmentMonthReportBinding,MonthRep
 
         barDataSet.valueTextColor = Color.BLACK
 
+        // màu cột
         barDataSet.color = resources.getColor(R.color.purple_200)
 
         barDataSet.valueTextSize = 16f

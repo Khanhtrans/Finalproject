@@ -65,6 +65,7 @@ class AddTransactionActivity : BaseActivity() {
         }
 
         binding.btnSave.setOnDelayClickListener {
+            // lấy data từ view
             val iname = selectCate
             val icategory = selectCate
             val iamount = binding.edtAmount.text.toString().trim()
@@ -76,7 +77,11 @@ class AddTransactionActivity : BaseActivity() {
             val ibill = currentPhotoPath
             val istatus = true
             val iuserId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
+
+
+
             val transaction = Transaction()
+            // check đã chọn ví chưa
             if (selectWallet == null) {
                 showToast("please select Wallet")
                 return@setOnDelayClickListener
@@ -86,7 +91,7 @@ class AddTransactionActivity : BaseActivity() {
 
             val user = databaseHelper.getUser(iuserId)
             val amountInLong = iamount.toLongOrNull()?:0
-
+            // kiểm tra trường amount và note đã nhập chưa, ngày đã chọn chưa?
             if (iamount.isEmpty() || idate.isEmpty() || inote.isEmpty()) {
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 val view = this.currentFocus
@@ -128,12 +133,14 @@ class AddTransactionActivity : BaseActivity() {
                     this.wallet = selectWallet
                     userId = iuserId
                     note = inote
-                    bill = ibill
+                    bill = ibill // đường dẫn đến ảnh đã chụp
                 }
                 databaseHelper.addTrans(transaction)
                 val walletMoney = wallet?.initialBalance?:0
                 val newWalletMoney = walletMoney - iamount.toLong()
                 wallet?.initialBalance = newWalletMoney
+
+                // update ví và tổng tiền vs số liệu mới
                 databaseHelper.updateWallet(wallet)
                 user.total -= iamount.toLong()
                 databaseHelper.updateUser(user)
@@ -204,6 +211,8 @@ class AddTransactionActivity : BaseActivity() {
                     cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
+
+        // take bill
         binding.btnTakeBill.setOnDelayClickListener {
             val MY_PERMISSIONS_REQUEST_CAMERA = 0
             if (ContextCompat.checkSelfPermission(
@@ -221,8 +230,10 @@ class AddTransactionActivity : BaseActivity() {
                         Manifest.permission.CAMERA
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
+                    //quyền chụp ảnh đã được cấp
                     dispatchTakePictureIntent()
                 } else {
+                    // chưa cấp quyền
                     Toast.makeText(
                         this,
                         "Camera access must be allowed to capture image",
@@ -264,7 +275,7 @@ class AddTransactionActivity : BaseActivity() {
         startActivity(Intent(this@AddTransactionActivity, MainActivity::class.java))
         finish()
     }
-
+// hiển thị dialog chọn ví
     private fun withMultiChoiceList() {
         val userId = SharePreUtil.GetShareInt(this, Constants.KEY_USER_ID);
         val myWallets = databaseHelper.getMyWallets(userId)
@@ -312,8 +323,8 @@ class AddTransactionActivity : BaseActivity() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             takePictureIntent.resolveActivity(packageManager)?.also {
-                // Create the File where the photo should go\]
 
+                // Create the File where the photo should go\]
                 val photoFile: File? = try {
                     createImageFile()
                 } catch (ex: IOException) {
@@ -335,6 +346,7 @@ class AddTransactionActivity : BaseActivity() {
         }
     }
 
+    // xử lý ảnh đã chụp
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         galleryAddPic()

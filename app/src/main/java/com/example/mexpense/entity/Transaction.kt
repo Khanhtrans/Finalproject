@@ -1,6 +1,8 @@
 package com.example.mexpense.entity
 
+// đối tượng transaction
 class Transaction {
+    // mô tả 1 đối tượng = code, sẽ gồm các thuộc tính của đối tượng và các method
     var id : Int = 0
     var name: String = ""
     var amount : Long = 0

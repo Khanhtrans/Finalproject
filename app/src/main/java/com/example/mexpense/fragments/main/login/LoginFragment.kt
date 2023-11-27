@@ -86,7 +86,7 @@ class LoginFragment : BaseMVVMFragment<FragmentLoginBinding, LoginViewModel>() {
         val id = user.id
         SharePreUtil.SetShareString(requireContext(),Constants.KEY_EMAIL,email)
         SharePreUtil.SetShareString(requireContext(),Constants.KEY_NAME,name)
-        SharePreUtil.SetShareInt(requireContext(),Constants.KEY_USER_ID,id)
+        SharePreUtil.SetShareInt(requireContext(),Constants.KEY_USER_ID,id) // lưu user id vừa đăng nhập vào share preference
         SharePreUtil.SetShareBoolean(requireContext(),Constants.KEY_IS_LOGIN,true)
 
         val intent = Intent(activity,MainActivity::class.java)

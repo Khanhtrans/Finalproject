@@ -25,16 +25,21 @@ class WeekReportViewModel : BaseViewModel() {
     fun getData(setMaxTrans: (String)-> Unit) {
         thisWeekTotal = 0
         lastWeekTotal = 0
+
         var maxTrans = 0L
         var maxTransName = ""
+
+
+        // lấy danh sách transcaction đã thêm của user với id == userId đã lưu
         val myTrans = sqlService.getMyTransaction(userId!!)
         for (trans in myTrans) {
+
             val date = simpleDateFormat.parse(trans.date)
             val calendar = Calendar.getInstance()
-            val currentWeek = calendar.get(Calendar.WEEK_OF_MONTH)
+            val currentWeek = calendar.get(Calendar.WEEK_OF_MONTH) // tuần này là bao nhiêu
             if (date != null) {
                 calendar.time = date
-                val addWeek = calendar.get(Calendar.WEEK_OF_MONTH)
+                val addWeek = calendar.get(Calendar.WEEK_OF_MONTH) // tuần của transaction
                 if (addWeek == currentWeek) {
                     if (maxTrans < trans.amount) {
                         maxTrans = trans.amount
@@ -44,7 +49,7 @@ class WeekReportViewModel : BaseViewModel() {
                 }
 
                 val lastCal = Calendar.getInstance()
-                lastCal.add(Calendar.WEEK_OF_MONTH, -1)
+                lastCal.add(Calendar.WEEK_OF_MONTH, -1) // tuấn trc là gì
                 val lastWeek = lastCal.get(Calendar.WEEK_OF_MONTH)
                 if (addWeek == lastWeek) {
                     lastWeekTotal += trans.amount

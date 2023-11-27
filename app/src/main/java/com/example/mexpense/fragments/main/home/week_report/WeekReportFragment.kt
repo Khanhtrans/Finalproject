@@ -62,24 +62,30 @@ class WeekReportFragment : BaseMVVMFragment<FragmentWeekReportBinding,WeekReport
     private fun getBarChartData() {
         barEntriesList = ArrayList()
 
-
+// khởi tạo 2 cột last week và this week:
         val xVals = ArrayList<String>()
+        // set title dưới chân
         xVals.add("Last week")
         xVals.add("This week")
-        val xAxis = viewBinding.idBarChart.xAxis
+        val xAxis = viewBinding.idBarChart.xAxis // gọi view con xAis của chart để set up lable dưới chan
         xAxis.granularity = 1f
         xAxis.isGranularityEnabled = true
         xAxis.setCenterAxisLabels(true)
         xAxis.setDrawGridLines(false)
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.position = XAxis.XAxisPosition.BOTTOM // set vị trí title
         // Below line will add labels on your xAxis:
         xAxis.valueFormatter = IndexAxisValueFormatter(xVals)
+
+
+        // barentriesList: danh sách cac cột sẽ hiển thị
+        // mỗi cột là 1 BarEntry(vị trí của cột đấy trên chart, giá trị chiều cao của cột ý)
         barEntriesList.add(BarEntry(0.5f, getViewModel().lastWeekTotal.toFloat()))
         barEntriesList.add(BarEntry(1.5f, getViewModel().thisWeekTotal.toFloat()))
     }
 
     private fun getData() {
         getViewModel().getData() {
+            // set text view tiêu dùng nhiêu nhất
             viewBinding.tvTopSpend.text = it
         }
 
